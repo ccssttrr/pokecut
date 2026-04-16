@@ -135,7 +135,7 @@ void listarPeluqueras(){
 
 void buscarPeluquera(){
     int id;
-    printf("ID de la peluquera: ");
+    printf("ID de la peluquera: "); //mucho mas seguro buscar todo por id y no por nombre porque igual nombre se repite, ademas si le das el id he puesto para que se enseñe el nombre luego
     scanf("%d", &id);
     getchar();
 
@@ -227,7 +227,6 @@ void ficharSalida(int id){
     printf("Peluquera no encontrada\n");
 }
 
-// Versión simple de fichar salida (8 horas fijas, como tenías antes)
 void ficharSalidaSimple(int id){
     for (int i = 0; i < numPeluqueras; i++){
         if (peluqueras[i].id == id) {
