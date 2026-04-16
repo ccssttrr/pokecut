@@ -2,198 +2,149 @@
 #include <stdlib.h>
 #include <string.h>
 #include "clientes.h"
-#include "reservas.h"
+#include "basededatos.h"
 
 Cliente *clientes = NULL;
 int numClientes = 0;
 int capacidadClientes = 0;
 
-void menuClientes(){
+void menuClientes() {
     int op;
-    do{
-        printf("\n1. Alta\n");
-        printf("2. Buscar\n");
-
-        printf("3. Editar\n");
-        printf("4. Listar\n");
-        printf("0. Volver\n");
-        printf("Opcion: ");
+    do {
+        printf("\n--- CLIENTES ---\n");
+        printf("1. Alta\n2. Buscar\n3. Listar\n0. Volver\n");
         scanf("%d", &op);
 
-        if (op == 1) altaCliente();
+        if      (op == 1) altaCliente();
         else if (op == 2) buscarCliente();
-        else if (op == 3) editarCliente();
-        else if (op == 4) listarClientes();
+        else if (op == 3) listarClientes();
 
     } while (op != 0);
 }
 
-
-void inicializarClientes(){
+void inicializarClientes() {
     capacidadClientes = 10;
     numClientes = 0;
-
     clientes = malloc(capacidadClientes * sizeof(Cliente));
-
-    if (!clientes) {
-        printf("Error memoria\n");
-        exit(1);
-    }
+    if (!clientes) { printf("Error memoria\n"); exit(1); }
 }
 
-int generarNuevoIdCliente() {
-    if (numClientes == 0) {
-        return 1;   
-    }
-
-    
-    int maxId = 0;
-    for (int i = 0; i < numClientes; i++) {
-        if (clientes[i].id > maxId) {
-            maxId = clientes[i].id;
-        }
-    }
-    return maxId + 1;
-}
-
-int existeIdCliente(int id) {
-    for (int i = 0; i < numClientes; i++) {
-        if (clientes[i].id == id) {
-            return 1;
-        }
-    }
-
-    return 0;
-}
-
-void altaCliente(){
-    if (numClientes >= capacidadClientes){
+void altaCliente() {
+    if (numClientes >= capacidadClientes) {
         capacidadClientes *= 2;
         Cliente *temp = realloc(clientes, capacidadClientes * sizeof(Cliente));
-        
-        if (!temp) {
-            printf("Error memoria\n");
-            exit(1);
-        }
+        if (!temp) { printf("Error memoria\n"); exit(1); }
         clientes = temp;
     }
 
     Cliente c;
-
-    //al ser nuevo cliente, para que no se repita ID se asigna automaticamente
-    c.id = generarNuevoIdCliente();
-
-    printf("Nombre: ");
-    scanf("%s", c.nombre);
-
-    printf("Telefono: ");
-    scanf("%s", c.telefono);
+    printf("ID: ");        scanf("%d",  &c.id);
+    printf("Nombre: ");    scanf("%49s", c.nombre);
+    printf("Telefono: ");  scanf("%19s", c.telefono);
+    printf("Email: ");     scanf("%99s", c.email);
 
     clientes[numClientes++] = c;
-
-    guardarClientes();
+    guardarCliente(c);  // guarda solo este en SQLite
+    printf("Cliente registrado.\n");
 }
 
-void buscarCliente(){
+void buscarCliente() {
     int id;
-    printf("ID del cliente: \n");
-    scanf(" %d", &id);
-    
-    for (int i = 0; i < numClientes; i++){
-        if (clientes[i].id == id) {
-            printf("Nombre:%s, Tf:%s\n", clientes[i].nombre, clientes[i].telefono);
-            return;
-        }
-    }
-    printf("No encontrado\n");
-}
-
-void editarCliente(){
-    int id;
-    printf("ID del cliente a editar: ");
+    printf("ID cliente: ");
     scanf("%d", &id);
-    getchar();
-
-    for (int i = 0; i < numClientes; i++){
+    for (int i = 0; i < numClientes; i++) {
         if (clientes[i].id == id) {
-            printf("ID: %d\n", clientes[i].id);
-            printf("Nombre actual: %s\n", clientes[i].nombre);
-            printf("Nuevo nombre (dejar vacio para mantener): ");
-            char nuevoNombre[50];
-            fgets(nuevoNombre, sizeof(nuevoNombre), stdin);
-            nuevoNombre[strcspn(nuevoNombre, "\n")] = '\0';
-            
-            if (strlen(nuevoNombre) > 0) {
-                strcpy(clientes[i].nombre, nuevoNombre);
-            }
-
-            printf("Telefono actual: %s\n", clientes[i].telefono);
-            printf("Nuevo telefono (dejar vacio para mantener): ");
-            char nuevoTelefono[20];
-            fgets(nuevoTelefono, sizeof(nuevoTelefono), stdin);
-            nuevoTelefono[strcspn(nuevoTelefono, "\n")] = '\0';
-            
-            if (strlen(nuevoTelefono) > 0) {
-                strcpy(clientes[i].telefono, nuevoTelefono);
-            }
-
-            guardarClientes();
-            printf("\nCliente editado exitosamente!\n");
+            printf("Nombre: %s\nTelefono: %s\nEmail: %s\n",
+                clientes[i].nombre, clientes[i].telefono, clientes[i].email);
             return;
         }
     }
-    
-    printf("Cliente con ID %d no encontrado\n", id);
+    printf("No encontrado.\n");
 }
 
-
-void listarClientes(){
-    
-    for (int i = 0; i < numClientes; i++){
-        printf("\n---Cliente numero %d----\n",i);
-        printf("ID:%d, Nombre:%s, Tf:%s\n", clientes[i].id, clientes[i].nombre, clientes[i].telefono);
+void listarClientes() {
+    if (numClientes == 0) { printf("No hay clientes.\n"); return; }
+    for (int i = 0; i < numClientes; i++) {
+        printf("[%d] %s - %s\n",
+            clientes[i].id, clientes[i].nombre, clientes[i].telefono);
     }
 }
 
-
-//---tema ficheros
-void guardarClientes() {
-    FILE *f = fopen("clientes.txt", "w");
-    if (!f) return;
-    
-    for (int i = 0; i < numClientes; i++){
-        fprintf(f, "%d,%s,%s\n",clientes[i].id,
-            clientes[i].nombre,
-            clientes[i].telefono);
-    }
-
-    fclose(f);
-}
-
-
-void cargarClientes(){
-    FILE *f = fopen("clientes.txt", "r");
-    if (!f) return;
-    numClientes = 0;
-    capacidadClientes = 10;
-    
-    clientes = malloc(capacidadClientes * sizeof(Cliente));
-    Cliente c;
-
-    while (fscanf(f, "%d,%49[^,],%19[^\n]",//el %49 es basicamente leer el fichero max 49 caracteres hasta q haya una coma
-        &c.id,
-        c.nombre,
-        c.telefono) == 3){
-        if (numClientes >= capacidadClientes) {
-            capacidadClientes *= 2;
-            clientes = realloc(clientes, capacidadClientes * sizeof(Cliente));
+void modificarCliente() {
+    int id;
+    printf("ID cliente: ");
+    scanf("%d", &id);
+    for (int i = 0; i < numClientes; i++) {
+        if (clientes[i].id == id) {
+            printf("Nuevo nombre: ");    scanf("%49s", clientes[i].nombre);
+            printf("Nuevo telefono: ");  scanf("%19s", clientes[i].telefono);
+            printf("Nuevo email: ");     scanf("%99s", clientes[i].email);
+            guardarCliente(clientes[i]);
+            printf("Cliente modificado.\n");
+            return;
         }
-        clientes[numClientes++] = c;
     }
-    fclose(f);
+    printf("No encontrado.\n");
+}
+
+// ---- SQLite ----
+
+// Guarda (inserta o actualiza) un cliente en la BD
+void guardarCliente(Cliente c) {
+    if (!db) return;
+    sqlite3_stmt *stmt;
+    const char *sql =
+        "INSERT OR REPLACE INTO clientes (id, nombre, telefono, email) "
+        "VALUES (?, ?, ?, ?);";
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) return;
+
+    sqlite3_bind_int (stmt, 1, c.id);
+    sqlite3_bind_text(stmt, 2, c.nombre,   -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 3, c.telefono, -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 4, c.email,    -1, SQLITE_STATIC);
+
+    sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
+}
+
+// Guarda todos los clientes en memoria (para compatibilidad)
+void guardarClientes() {
+    for (int i = 0; i < numClientes; i++)
+        guardarCliente(clientes[i]);
+}
+
+// Callback que recibe cada fila de SQLite y la mete en el array
+static int callbackCliente(void *unused, int cols, char **valores, char **nombres) {
+    (void)unused; (void)cols; (void)nombres;
+
+    if (numClientes >= capacidadClientes) {
+        capacidadClientes *= 2;
+        clientes = realloc(clientes, capacidadClientes * sizeof(Cliente));
+    }
+
+    Cliente c;
+    c.id = atoi(valores[0]);
+    strncpy(c.nombre,   valores[1] ? valores[1] : "", 49);
+    strncpy(c.telefono, valores[2] ? valores[2] : "", 19);
+    strncpy(c.email,    valores[3] ? valores[3] : "", 99);
+
+    clientes[numClientes++] = c;
+    return 0;
+}
+
+void cargarClientes() {
+    if (!db) return;
+    numClientes = 0;
+    char *err = NULL;
+    sqlite3_exec(db, "SELECT id, nombre, telefono, email FROM clientes;",
+                 callbackCliente, NULL, &err);
+    if (err) { printf("Error cargando clientes: %s\n", err); sqlite3_free(err); }
 }
 
 void liberarClientes() {
-    
     free(clientes);
+    clientes = NULL;
+    numClientes = 0;
+    capacidadClientes = 0;
 }

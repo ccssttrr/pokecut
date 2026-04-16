@@ -2,318 +2,172 @@
 #include <stdlib.h>
 #include <string.h>
 #include "peluqueras.h"
+#include "basededatos.h"
 
 Peluquera *peluqueras = NULL;
 int numPeluqueras = 0;
 int capacidadPeluqueras = 0;
 
-
-void menuPeluqueras(){
+void menuPeluqueras() {
     int op;
-    int id;
-
-    do{
-        printf("\n1. Alta\n");
-        printf("2. Buscar\n");
-        printf("3. Editar\n");
-        printf("4. Listar\n");
-        printf("5. Fichar entrada\n");
-        printf("6. Fichar salida\n");
-        printf("0. Volver\n");
-        printf("Opcion: ");
+    do {
+        printf("\n--- PELUQUERAS ---\n");
+        printf("1. Alta\n2. Buscar\n3. Listar\n0. Volver\n");
         scanf("%d", &op);
-        getchar();
 
-        if (op == 1) altaPeluquera();
+        if      (op == 1) altaPeluquera();
         else if (op == 2) buscarPeluquera();
-        else if (op == 3) editarPeluquera();
-        else if (op == 4) listarPeluqueras();
-        else if (op == 5) {
-            printf("ID de la peluquera: ");
-            scanf("%d", &id);
-            getchar();
-            ficharEntrada(id);
-        }else if (op == 6) {
-            printf("ID de la peluquera: ");
-            scanf("%d", &id);
-            getchar();
-            ficharSalida(id);
-        }
+        else if (op == 3) listarPeluqueras();
 
     } while (op != 0);
 }
-void inicializarPeluqueras(){
+
+void inicializarPeluqueras() {
     capacidadPeluqueras = 10;
     numPeluqueras = 0;
-
     peluqueras = malloc(capacidadPeluqueras * sizeof(Peluquera));
-
-    if (!peluqueras){
-        printf("Error de memoria\n");
-        exit(1);
-    }
+    if (!peluqueras) { printf("Error de memoria\n"); exit(1); }
 }
 
-int generarNuevoIdPeluquera() {
-
-    if (numPeluqueras == 0) {
-        return 1;
-    }
-    
-    int maxId = 0;
-    for (int i = 0; i < numPeluqueras; i++) {
-        if (peluqueras[i].id > maxId) {
-            maxId = peluqueras[i].id;
-        }
-    }
-    return maxId + 1;
-}
-
-int existeIdPeluquera(int id) {
-
-    for (int i = 0; i < numPeluqueras; i++) {
-        if (peluqueras[i].id == id) {
-            return 1;
-        }
-    }
-    return 0;
-}
-
-void altaPeluquera(){
-
-    if (numPeluqueras >= capacidadPeluqueras){
+void altaPeluquera() {
+    if (numPeluqueras >= capacidadPeluqueras) {
         capacidadPeluqueras *= 2;
         Peluquera *temp = realloc(peluqueras, capacidadPeluqueras * sizeof(Peluquera));
-        
-        if (temp == NULL){
-            printf("Error de memoria \n");
-            exit(1);
-        }
+        if (!temp) { printf("Error de memoria\n"); exit(1); }
         peluqueras = temp;
     }
 
     Peluquera p;
-    
-    //asignar ID a nuevas peluqeras automaticamente
-    p.id = generarNuevoIdPeluquera();
-    
-    printf("\n--- NUEVA PELUQUERA ---\n");
-    printf("ID asignado: %d\n", p.id);
-
-    printf("Nombre: ");
-    fgets(p.nombre, sizeof(p.nombre), stdin);
-    p.nombre[strcspn(p.nombre, "\n")] = '\0';
-
-    printf("Especialidad: ");
-    fgets(p.especialidad, sizeof(p.especialidad), stdin);
-    p.especialidad[strcspn(p.especialidad, "\n")] = '\0';
-
-    printf("Telefono: ");
-    fgets(p.telefono, sizeof(p.telefono), stdin);
-    p.telefono[strcspn(p.telefono, "\n")] = '\0';
-
+    printf("ID: ");           scanf("%d",  &p.id);
+    printf("Nombre: ");       scanf("%49s", p.nombre);
+    printf("Especialidad: "); scanf("%49s", p.especialidad);
+    printf("Telefono: ");     scanf("%19s", p.telefono);
     p.horasTrabajadas = 0;
 
-    peluqueras[numPeluqueras] = p;
-    numPeluqueras++;
-
-    guardarPeluqueras();
-    printf("\nPeluquera registrada con exito! ID: %d\n", p.id);
+    peluqueras[numPeluqueras++] = p;
+    guardarPeluquera(p);
+    printf("Peluquera registrada.\n");
 }
 
-void listarPeluqueras(){
-
-    if (numPeluqueras == 0) {
-        printf("No hay peluqueras registradas\n");
-        return;
-    }
-    
-    for (int i = 0; i < numPeluqueras; i++) {
-        printf("\n--- Peluquera numero %d ---\n", i+1);
-        printf("ID: %d\n", peluqueras[i].id);
-        printf("Nombre: %s\n", peluqueras[i].nombre);
-        printf("Especialidad: %s\n", peluqueras[i].especialidad);
-        printf("Telefono: %s\n", peluqueras[i].telefono);
-        printf("Horas trabajadas: %.1f\n \n", peluqueras[i].horasTrabajadas);
-    }
-}
-
-void buscarPeluquera(){
-
+void buscarPeluquera() {
     int id;
-    printf("ID de la peluquera: "); //mucho mas seguro buscar todo por id y no por nombre porque igual nombre se repite, ademas si le das el id he puesto para que se enseñe el nombre luego
+    printf("ID peluquera: ");
     scanf("%d", &id);
-    getchar();
-
     for (int i = 0; i < numPeluqueras; i++) {
         if (peluqueras[i].id == id) {
-            printf("ID: %d\n", peluqueras[i].id);
-            printf("Nombre: %s\n", peluqueras[i].nombre);
-            printf("Especialidad: %s\n", peluqueras[i].especialidad);
-            printf("Telefono: %s\n", peluqueras[i].telefono);
-            printf("Horas trabajadas: %.1f\n", peluqueras[i].horasTrabajadas);
+            printf("Nombre: %s\nEspecialidad: %s\nTelefono: %s\nHoras: %d\n",
+                peluqueras[i].nombre, peluqueras[i].especialidad,
+                peluqueras[i].telefono, peluqueras[i].horasTrabajadas);
             return;
         }
     }
-    printf("Peluquera no encontrada\n");
+    printf("No encontrada.\n");
 }
 
-void editarPeluquera(){
+void listarPeluqueras() {
+    if (numPeluqueras == 0) { printf("No hay peluqueras.\n"); return; }
+    for (int i = 0; i < numPeluqueras; i++) {
+        printf("[%d] %s - %s - Horas: %d\n",
+            peluqueras[i].id, peluqueras[i].nombre,
+            peluqueras[i].especialidad, peluqueras[i].horasTrabajadas);
+    }
+}
+
+void modificarPeluquera() {
     int id;
-    printf("ID de la peluquera a editar: ");
+    printf("ID peluquera: ");
     scanf("%d", &id);
-    getchar();
-
-    for (int i = 0; i < numPeluqueras; i++){
+    for (int i = 0; i < numPeluqueras; i++) {
         if (peluqueras[i].id == id) {
-            printf("\nID: %d\n", peluqueras[i].id);
-            printf("Nombre actual: %s\n", peluqueras[i].nombre);
-            printf("Nuevo nombre (dejar vacio para mantener): ");
-            char nuevoNombre[50];
-            fgets(nuevoNombre, sizeof(nuevoNombre), stdin);
-            nuevoNombre[strcspn(nuevoNombre, "\n")] = '\0';
-            
-            if (strlen(nuevoNombre) > 0){
-                strcpy(peluqueras[i].nombre, nuevoNombre);
-            }
-
-            printf("Especialidad actual: %s\n", peluqueras[i].especialidad);
-            printf("Nueva especialidad (dejar vacio para mantener): ");
-            char nuevaEspecialidad[50];
-            fgets(nuevaEspecialidad, sizeof(nuevaEspecialidad), stdin);
-            nuevaEspecialidad[strcspn(nuevaEspecialidad, "\n")] = '\0';
-            
-            if (strlen(nuevaEspecialidad) > 0){
-                strcpy(peluqueras[i].especialidad, nuevaEspecialidad);
-            }
-
-            printf("Telefono actual: %s\n", peluqueras[i].telefono);
-            printf("Nuevo telefono (dejar vacio para mantener): ");
-            char nuevoTelefono[20];
-            fgets(nuevoTelefono, sizeof(nuevoTelefono), stdin);
-            nuevoTelefono[strcspn(nuevoTelefono, "\n")] = '\0';
-            
-            if (strlen(nuevoTelefono) > 0){
-                strcpy(peluqueras[i].telefono, nuevoTelefono);
-            }
-
-            guardarPeluqueras();
-            printf("\nPeluquera editada\n");
+            printf("Nuevo nombre: ");       scanf("%49s", peluqueras[i].nombre);
+            printf("Nueva especialidad: "); scanf("%49s", peluqueras[i].especialidad);
+            printf("Nuevo telefono: ");     scanf("%19s", peluqueras[i].telefono);
+            guardarPeluquera(peluqueras[i]);
+            printf("Peluquera modificada.\n");
             return;
         }
     }
-    printf("Peluquera con ID %d no encontrada\n", id);
+    printf("No encontrada.\n");
 }
 
-void ficharEntrada(int id){
-
-    for (int i = 0; i < numPeluqueras; i++){
-
+void ficharEntrada(int id) {
+    for (int i = 0; i < numPeluqueras; i++) {
         if (peluqueras[i].id == id) {
-            printf("Entrada registrada para %s\n", peluqueras[i].nombre);
+            printf("Entrada registrada.\n");
             return;
         }
     }
-    printf("Peluquera no encontrada\n");
 }
 
-void ficharSalida(int id){
-    float horas;
-    printf("Horas trabajadas hoy: ");
-    scanf("%f", &horas);
-    getchar();
-    
-    for (int i = 0; i < numPeluqueras; i++){
-
-        if (peluqueras[i].id == id) {
-            peluqueras[i].horasTrabajadas += horas; //la suma de las horas
-            guardarPeluqueras();
-            printf("Salida registrada para %s. Total horas acumuladas: %.1f\n", peluqueras[i].nombre, peluqueras[i].horasTrabajadas);
-            return;
-        }
-    }
-    printf("Peluquera no encontrada\n");
-}
-
-void ficharSalidaSimple(int id){
-
-    for (int i = 0; i < numPeluqueras; i++){
+void ficharSalida(int id) {
+    for (int i = 0; i < numPeluqueras; i++) {
         if (peluqueras[i].id == id) {
             peluqueras[i].horasTrabajadas += 8;
-            guardarPeluqueras();
-            printf("Salida registrada para %s\n", peluqueras[i].nombre);
+            guardarPeluquera(peluqueras[i]);
+            printf("Salida registrada.\n");
             return;
         }
     }
-    printf("Peluquera no encontrada\n");
 }
 
-// --- tema ficheros
-void guardarPeluqueras(){
+// ---- SQLite ----
 
-    FILE *f = fopen("peluqueras.txt", "w");
-    if (!f) return;
-    
-    for (int i = 0; i < numPeluqueras; i++){
-        fprintf(f, "%d,%s,%s,%s,%.1f\n",
-            peluqueras[i].id,
-            peluqueras[i].nombre,
-            peluqueras[i].especialidad,
-            peluqueras[i].telefono,
-            peluqueras[i].horasTrabajadas);
-    }
-    fclose(f);
+void guardarPeluquera(Peluquera p) {
+    if (!db) return;
+    sqlite3_stmt *stmt;
+    const char *sql =
+        "INSERT OR REPLACE INTO peluqueras (id, nombre, especialidad, telefono, horas_trabajadas) "
+        "VALUES (?, ?, ?, ?, ?);";
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) return;
+
+    sqlite3_bind_int (stmt, 1, p.id);
+    sqlite3_bind_text(stmt, 2, p.nombre,       -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 3, p.especialidad, -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 4, p.telefono,     -1, SQLITE_STATIC);
+    sqlite3_bind_int (stmt, 5, p.horasTrabajadas);
+
+    sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
 }
 
-void cargarPeluqueras(){
+void guardarPeluqueras() {
+    for (int i = 0; i < numPeluqueras; i++)
+        guardarPeluquera(peluqueras[i]);
+}
 
-    FILE *f = fopen("peluqueras.txt", "r");
-    if (!f) {
-        printf("No se encontró peluqueras.txt, se creará uno nuevo al guardar\n");
-        return;
-    }
+static int callbackPeluquera(void *unused, int cols, char **valores, char **nombres) {
+    (void)unused; (void)cols; (void)nombres;
 
-    capacidadPeluqueras = 10;
-    numPeluqueras = 0;
-
-    peluqueras = malloc(capacidadPeluqueras * sizeof(Peluquera));
-    if (!peluqueras) {
-        fclose(f);
-        return;
+    if (numPeluqueras >= capacidadPeluqueras) {
+        capacidadPeluqueras *= 2;
+        peluqueras = realloc(peluqueras, capacidadPeluqueras * sizeof(Peluquera));
     }
 
     Peluquera p;
-    char linea[300];
+    p.id = atoi(valores[0]);
+    strncpy(p.nombre,       valores[1] ? valores[1] : "", 49);
+    strncpy(p.especialidad, valores[2] ? valores[2] : "", 49);
+    strncpy(p.telefono,     valores[3] ? valores[3] : "", 19);
+    p.horasTrabajadas = valores[4] ? atoi(valores[4]) : 0;
 
-    while (fgets(linea, sizeof(linea), f)) {
-        linea[strcspn(linea, "\n")] = '\0';
-        
-        if (sscanf(linea, "%d,%49[^,],%49[^,],%19[^,],%f", &p.id, p.nombre, p.especialidad, p.telefono, &p.horasTrabajadas) == 5){
-
-            if (numPeluqueras >= capacidadPeluqueras){
-                capacidadPeluqueras *= 2;
-                Peluquera *temp = realloc(peluqueras, capacidadPeluqueras * sizeof(Peluquera));
-
-                if (!temp) {
-                    printf("Error de memoria\n");
-                    fclose(f);
-                    return;
-                }
-                peluqueras = temp;
-            }
-            peluqueras[numPeluqueras] = p;
-            numPeluqueras++;
-        }
-    }
-    fclose(f);
+    peluqueras[numPeluqueras++] = p;
+    return 0;
 }
 
-void liberarPeluqueras(){
-    
-    if (peluqueras != NULL) {
-        free(peluqueras);
-        peluqueras = NULL;
-    }
+void cargarPeluqueras() {
+    if (!db) return;
+    numPeluqueras = 0;
+    char *err = NULL;
+    sqlite3_exec(db,
+        "SELECT id, nombre, especialidad, telefono, horas_trabajadas FROM peluqueras;",
+        callbackPeluquera, NULL, &err);
+    if (err) { printf("Error cargando peluqueras: %s\n", err); sqlite3_free(err); }
+}
+
+void liberarPeluqueras() {
+    free(peluqueras);
+    peluqueras = NULL;
     numPeluqueras = 0;
     capacidadPeluqueras = 0;
 }

@@ -2,38 +2,29 @@
 #define PELUQUERAS_H
 
 typedef struct {
-    int id;
+    int  id;
     char nombre[50];
     char especialidad[50];
     char telefono[20];
-    float horasTrabajadas;
-    
+    int  horasTrabajadas;
 } Peluquera;
+
+extern Peluquera *peluqueras;
+extern int numPeluqueras;
+extern int capacidadPeluqueras;
 
 void menuPeluqueras();
 void inicializarPeluqueras();
 void altaPeluquera();
-void listarPeluqueras();
 void buscarPeluquera();
+void listarPeluqueras();
 void modificarPeluquera();
-void editarPeluquera();
-
-
 void ficharEntrada(int id);
 void ficharSalida(int id);
-int generarNuevoIdPeluquera();
-int existeIdPeluquera(int id);
 
-/// para que se guarden losd atos
+void guardarPeluquera(Peluquera p);
 void guardarPeluqueras();
 void cargarPeluqueras();
-
-//memoria
 void liberarPeluqueras();
-
-//variables globales
-extern Peluquera *peluqueras;
-extern int numPeluqueras;
-extern int capacidadPeluqueras;
 
 #endif
