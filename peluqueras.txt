@@ -1,0 +1,5 @@
+1,Ana,Corte,600111222,40
+2,Laura,Color,611222333,32
+3,Marta,Peinados,622333444,25
+4,Jon,Alisado,5544633,50
+10,Lorena,Alisado,6679933,0
