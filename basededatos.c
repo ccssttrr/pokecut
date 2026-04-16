@@ -13,7 +13,7 @@
 
 void inicializarBD(){
     //todavia no hay q cargar datos, es para mas adelante caundo haya estructuras
-    //hay q conectar la base de datos a esto
+    //hay q conectar la base de datos a esto.
 }
 
 void cargarBD(){
