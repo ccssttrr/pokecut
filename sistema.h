@@ -3,6 +3,7 @@
 
 void inicializarSistema();
 void cargarSistema();
+
 void guardarSistema();
 void cerrarSistema();
 

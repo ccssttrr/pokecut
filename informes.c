@@ -9,10 +9,12 @@
 #include "peluqueras.h"
 
 void informeReservasTotales(){
+
     printf("Total reservas: %d\n", numReservas);
 }
 
 void informeReservasPorCliente(){
+
     for (int i = 0; i < numClientes; i++){
         int contador = 0;
         for (int j = 0; j < numReservas; j++) {
@@ -24,6 +26,7 @@ void informeReservasPorCliente(){
 }
 
 void informeServiciosMasDemandados(){
+
     for (int i = 0; i < numServicios; i++){
         int contador = 0;
         for (int j = 0; j < numReservas; j++) {
@@ -35,6 +38,7 @@ void informeServiciosMasDemandados(){
 }
 
 void informeFacturacionEstimada(){
+
     float total = 0;
     for (int i = 0; i < numReservas; i++){
         for (int j = 0; j < numServicios; j++){
@@ -47,6 +51,7 @@ void informeFacturacionEstimada(){
 }
 
 void informeFacturacionPorPeluquera(){
+    
     for (int i = 0; i < numPeluqueras; i++){
         float total = 0;
         for (int j = 0; j < numReservas; j++){

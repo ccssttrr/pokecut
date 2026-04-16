@@ -17,13 +17,16 @@ void inicializarBD(){
 }
 
 void cargarBD(){
+
     cargarClientes();
     cargarPeluqueras();
     cargarServicios();
     cargarReservas();
 }
 
+
 void guardarBD(){
+
     guardarClientes();
     guardarPeluqueras();
     guardarServicios();
@@ -31,6 +34,7 @@ void guardarBD(){
 }
 
 void cerrarBD(){
+    
     liberarClientes();
     liberarPeluqueras();
     liberarServicios();

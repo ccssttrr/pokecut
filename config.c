@@ -7,6 +7,7 @@
 Config config;
 
 void inicializarConfig() {
+
     strcpy(config.horarioApertura, "09:00");
     strcpy(config.horarioCierre, "20:00");
     config.duracionPorDefecto = 60;
@@ -18,6 +19,7 @@ void inicializarConfig() {
 }
 
 void cargarConfig(){
+
     FILE *f = fopen("config.txt", "r");
 
     if (!f){
@@ -58,6 +60,7 @@ void guardarConfig(){
 }
 
 void mostrarConfig(){
+    
     printf("\n      CONFIGURACION\n");
     printf("Horario apertura: %s\n", config.horarioApertura);
     printf("Horario cierre: %s\n", config.horarioCierre);

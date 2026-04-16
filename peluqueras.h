@@ -7,6 +7,7 @@ typedef struct {
     char especialidad[50];
     char telefono[20];
     float horasTrabajadas;
+    
 } Peluquera;
 
 void menuPeluqueras();
@@ -16,6 +17,7 @@ void listarPeluqueras();
 void buscarPeluquera();
 void modificarPeluquera();
 void editarPeluquera();
+
 
 void ficharEntrada(int id);
 void ficharSalida(int id);

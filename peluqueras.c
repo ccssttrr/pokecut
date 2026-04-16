@@ -11,6 +11,7 @@ int capacidadPeluqueras = 0;
 void menuPeluqueras(){
     int op;
     int id;
+
     do{
         printf("1. Alta\n");
         printf("2. Buscar\n");
@@ -32,8 +33,7 @@ void menuPeluqueras(){
             scanf("%d", &id);
             getchar();
             ficharEntrada(id);
-        }
-        else if (op == 6) {
+        }else if (op == 6) {
             printf("ID de la peluquera: ");
             scanf("%d", &id);
             getchar();
@@ -47,6 +47,7 @@ void inicializarPeluqueras(){
     numPeluqueras = 0;
 
     peluqueras = malloc(capacidadPeluqueras * sizeof(Peluquera));
+
     if (!peluqueras){
         printf("Error de memoria\n");
         exit(1);
@@ -54,6 +55,7 @@ void inicializarPeluqueras(){
 }
 
 int generarNuevoIdPeluquera() {
+
     if (numPeluqueras == 0) {
         return 1;
     }
@@ -68,6 +70,7 @@ int generarNuevoIdPeluquera() {
 }
 
 int existeIdPeluquera(int id) {
+
     for (int i = 0; i < numPeluqueras; i++) {
         if (peluqueras[i].id == id) {
             return 1;
@@ -77,9 +80,11 @@ int existeIdPeluquera(int id) {
 }
 
 void altaPeluquera(){
+
     if (numPeluqueras >= capacidadPeluqueras){
         capacidadPeluqueras *= 2;
         Peluquera *temp = realloc(peluqueras, capacidadPeluqueras * sizeof(Peluquera));
+        
         if (temp == NULL){
             printf("Error de memoria \n");
             exit(1);
@@ -113,11 +118,11 @@ void altaPeluquera(){
     numPeluqueras++;
 
     guardarPeluqueras();
-
     printf("\nPeluquera registrada con exito! ID: %d\n", p.id);
 }
 
 void listarPeluqueras(){
+
     if (numPeluqueras == 0) {
         printf("No hay peluqueras registradas\n");
         return;
@@ -134,6 +139,7 @@ void listarPeluqueras(){
 }
 
 void buscarPeluquera(){
+
     int id;
     printf("ID de la peluquera: "); //mucho mas seguro buscar todo por id y no por nombre porque igual nombre se repite, ademas si le das el id he puesto para que se enseñe el nombre luego
     scanf("%d", &id);
@@ -192,7 +198,6 @@ void editarPeluquera(){
             }
 
             guardarPeluqueras();
-
             printf("\nPeluquera editada\n");
             return;
         }
@@ -201,7 +206,9 @@ void editarPeluquera(){
 }
 
 void ficharEntrada(int id){
+
     for (int i = 0; i < numPeluqueras; i++){
+
         if (peluqueras[i].id == id) {
             printf("Entrada registrada para %s\n", peluqueras[i].nombre);
             return;
@@ -217,8 +224,9 @@ void ficharSalida(int id){
     getchar();
     
     for (int i = 0; i < numPeluqueras; i++){
+
         if (peluqueras[i].id == id) {
-            peluqueras[i].horasTrabajadas += horas;
+            peluqueras[i].horasTrabajadas += horas; //la suma de las horas
             guardarPeluqueras();
             printf("Salida registrada para %s. Total horas acumuladas: %.1f\n", peluqueras[i].nombre, peluqueras[i].horasTrabajadas);
             return;
@@ -228,6 +236,7 @@ void ficharSalida(int id){
 }
 
 void ficharSalidaSimple(int id){
+
     for (int i = 0; i < numPeluqueras; i++){
         if (peluqueras[i].id == id) {
             peluqueras[i].horasTrabajadas += 8;
@@ -241,6 +250,7 @@ void ficharSalidaSimple(int id){
 
 // --- tema ficheros
 void guardarPeluqueras(){
+
     FILE *f = fopen("peluqueras.txt", "w");
     if (!f) return;
     
@@ -256,6 +266,7 @@ void guardarPeluqueras(){
 }
 
 void cargarPeluqueras(){
+
     FILE *f = fopen("peluqueras.txt", "r");
     if (!f) {
         printf("No se encontró peluqueras.txt, se creará uno nuevo al guardar\n");
@@ -282,6 +293,7 @@ void cargarPeluqueras(){
             if (numPeluqueras >= capacidadPeluqueras){
                 capacidadPeluqueras *= 2;
                 Peluquera *temp = realloc(peluqueras, capacidadPeluqueras * sizeof(Peluquera));
+
                 if (!temp) {
                     printf("Error de memoria\n");
                     fclose(f);
@@ -297,6 +309,7 @@ void cargarPeluqueras(){
 }
 
 void liberarPeluqueras(){
+    
     if (peluqueras != NULL) {
         free(peluqueras);
         peluqueras = NULL;

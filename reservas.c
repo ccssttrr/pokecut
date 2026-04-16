@@ -4,15 +4,19 @@
 #include "clientes.h"
 #include "peluqueras.h"
 #include "servicios.h"
+
 //el problema es que una reserva da para un servicio, pero queria un N : M por si queria hacer mas de un servicio a la vez
 //hay que preguntar como hacerlo o si no dejarlo como una reserva un servicio. Por ahora se queda en un servicio una reserva pero en un futuro si sabemos lo cambiamos
 //si no otra solucion es meter servicios con mas de una cosa, ej: cortar y peinar , lavar y peinar... o q en el alisado ya te venga default el lavar por ejemplo
+// ---preguntar al profe esto----
+
 Reserva *reservas = NULL;
 int numReservas = 0;
 int capacidadReservas = 0;
 
 void menuReservas(){
     int op;
+
     do{
         printf("1. Crear\n2. Listar\n3. Buscar\n4. Cancelar\n0. Volver\n");
         scanf("%d", &op);
@@ -28,24 +32,12 @@ void menuReservas(){
 void inicializarReservas(){
     capacidadReservas = 10;
     reservas = malloc(capacidadReservas * sizeof(Reserva));
-
     if (reservas == NULL){
         printf("Error de memoria \n");
         exit(1);
     }
 }
 
-int existeCliente(int id){
-    for (int i = 0; i < numClientes; i++)
-        if (clientes[i].id == id) return 1;
-    return 0;
-}
-
-int existePeluquera(int id){
-    for (int i = 0; i < numPeluqueras; i++)
-        if (peluqueras[i].id == id) return 1;
-    return 0;
-}
 
 int existeServicio(int id){
     for (int i = 0; i < numServicios; i++)
@@ -53,7 +45,22 @@ int existeServicio(int id){
     return 0;
 }
 
+int existePeluquera(int id){
+
+    for (int i = 0; i < numPeluqueras; i++)
+        if (peluqueras[i].id == id) return 1;
+    return 0;
+}
+
+int existeCliente(int id){
+
+    for (int i = 0; i < numClientes; i++)
+        if (clientes[i].id == id) return 1;
+    return 0;
+}
+
 char* obtenerNombreCliente(int idCliente){
+
     for (int i = 0; i < numClientes; i++) {
         if (clientes[i].id == idCliente) {
             return clientes[i].nombre;  //asumiendo que clientes[i].nombre es un array o puntero
@@ -63,6 +70,7 @@ char* obtenerNombreCliente(int idCliente){
 }
 
 char* obtenerNombrePeluquera(int idPeluquera){
+
     for (int i = 0; i < numPeluqueras; i++){
         if (peluqueras[i].id == idPeluquera){
             return peluqueras[i].nombre;
@@ -72,6 +80,7 @@ char* obtenerNombrePeluquera(int idPeluquera){
 }
 
 char* obtenerNombreServicio(int idServicio){
+
     for (int i = 0; i < numServicios; i++){
         if (servicios[i].id == idServicio){
             return servicios[i].nombre;
@@ -81,6 +90,7 @@ char* obtenerNombreServicio(int idServicio){
 }
 
 void crearReserva(){
+
     if (numReservas >= capacidadReservas){
         capacidadReservas *= 2;
         Reserva *temp = realloc(reservas, capacidadReservas * sizeof(Reserva));
@@ -124,12 +134,13 @@ void crearReserva(){
     reservas[numReservas] = r;
     numReservas++;
     guardarReservas();
+
     printf("Reserva creada \n");
 }
 
 void buscarReserva(){
     int id;
-    printf("ID reserva: "); //para buscar usamos solo ID nombre no porque se puede repetir  
+    printf("ID reserva: "); //para buscar usamos solo ID nombre no porque se puede repetir, luego podemos usamos nombre para sacar por pantalla
     scanf("%d", &id);
 
     for (int i = 0; i < numReservas; i++){
@@ -148,6 +159,7 @@ void buscarReserva(){
 }
 
 void listarReservas(){
+
     if (numReservas == 0) {
         printf("No hay reservas registradas\n");
         return;
@@ -168,6 +180,7 @@ void cancelarReserva(){
     int id;
     printf("ID reserva: ");
     scanf("%d", &id);
+
     for (int i = 0; i < numReservas; i++) {
         if (reservas[i].idReserva == id) {
             for (int j = i; j < numReservas - 1; j++) {
@@ -189,13 +202,7 @@ void guardarReservas(){
     if (!f) return;
 
     for (int i = 0; i < numReservas; i++){
-        fprintf(f, "%d,%d,%d,%d,%s,%s \n",
-            reservas[i].idReserva,
-            reservas[i].idCliente,
-            reservas[i].idPeluquera,
-            reservas[i].idServicio,
-            reservas[i].fecha,
-            reservas[i].hora);
+        fprintf(f, "%d,%d,%d,%d,%s,%s \n", reservas[i].idReserva, reservas[i].idCliente, reservas[i].idPeluquera, reservas[i].idServicio, reservas[i].fecha, reservas[i].hora);
     }
     fclose(f);
 }
@@ -220,10 +227,11 @@ void cargarReservas(){
         &r.idPeluquera,
         &r.idServicio,      //todos estos valores dentro del while porque mientras q lea todo esto sigue ejecutando
         r.fecha,
-        r.hora) == 6) { // =6 porque en total 6 campos hay
+        r.hora) == 6) { // =6 porque en total 6 campos hay.
             if (numReservas >= capacidadReservas) {
                 capacidadReservas *= 2;
                 Reserva *temp = realloc(reservas, capacidadReservas * sizeof(Reserva));
+                
                 if (temp == NULL) {
                     printf("Error de memoria \n");
                     return;

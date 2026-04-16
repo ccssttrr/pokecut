@@ -12,6 +12,7 @@ int capacidadServicios = 0;
 void menuServicios(){
     int op;
     do{
+
         printf("1. Alta\n2. Buscar\n3. Listar\n0. Volver\n");
         scanf(" %d", &op);
 
@@ -23,6 +24,7 @@ void menuServicios(){
 }
 
 void inicializarServicios(){
+
     capacidadServicios = 10;
     servicios = malloc(capacidadServicios * sizeof(Servicio));
 
@@ -33,10 +35,13 @@ void inicializarServicios(){
 }
 
 void altaServicio(){
+
     if (numServicios >= capacidadServicios){
         capacidadServicios *= 2;
 
+
         //malloc es para asignar y realloc para hacerlo mas grande o pequeño
+
         Servicio *temp = realloc(servicios, capacidadServicios * sizeof(Servicio));
         if (temp == NULL){ //para comprobar y asegurar de que realloc nod e null y tenga donde asignar
             printf("Error de memoria \n");
@@ -57,9 +62,11 @@ void altaServicio(){
     scanf("%d", &s.id);
     getchar();  //limpiar para que no se pille
 
+
     printf("Nombre: ");
     fgets(s.nombre, sizeof(s.nombre), stdin);
     s.nombre[strcspn(s.nombre, "\n")] = '\0';//para quitar el salto de linea
+
 
     printf("Descripcion: ");
     fgets(s.descripcion, sizeof(s.descripcion), stdin);
@@ -81,6 +88,7 @@ void altaServicio(){
 }
 
 void buscarServicio(){
+
     int id;
     printf("ID servicio: ");
     scanf("%d", &id);
@@ -88,6 +96,7 @@ void buscarServicio(){
 
     for (int i = 0; i < numServicios; i++){
         if (servicios[i].id == id) {
+
             printf("\n=== SERVICIO ENCONTRADO ===\n");
             printf("ID: %d\n", servicios[i].id);
             printf("Nombre: %s\n", servicios[i].nombre);
@@ -98,57 +107,6 @@ void buscarServicio(){
         }
     }
     printf("Servicio no encontrado\n");
-}
-
-void modificarServicio(){
-    int id;
-    printf("ID servicio a modificar: ");
-    scanf("%d", &id);
-    getchar();
-
-    for (int i = 0; i < numServicios; i++){
-        if (servicios[i].id == id){
-            printf("\n--- Modificando servicio: %s ---\n", servicios[i].nombre);
-            
-            printf("Nuevo nombre (actual: %s): ", servicios[i].nombre);
-            fgets(servicios[i].nombre, sizeof(servicios[i].nombre), stdin);
-            servicios[i].nombre[strcspn(servicios[i].nombre, "\n")] = '\0';
-
-            printf("Nueva descripcion (actual: %s): ", servicios[i].descripcion);
-            fgets(servicios[i].descripcion, sizeof(servicios[i].descripcion), stdin);
-            servicios[i].descripcion[strcspn(servicios[i].descripcion, "\n")] = '\0';
-
-            printf("Nueva duracion (actual: %d min): ", servicios[i].duracion);
-            scanf("%d", &servicios[i].duracion);
-            getchar();
-
-            printf("Nuevo precio (actual: %.2f €): ", servicios[i].precio);
-            scanf("%f", &servicios[i].precio);
-            getchar();
-
-            guardarServicios();
-            printf("Servicio modificado correctamente\n");
-            return;
-        }
-    }
-    printf("Servicio no encontrado\n");
-}
-
-void listarServicios() {
-    if (numServicios == 0) {
-        printf("No hay servicios registrados\n");
-        return;
-    }
-    
-    printf("\n=== LISTADO DE SERVICIOS ===\n");
-    for (int i = 0; i < numServicios; i++){
-        printf("\n--- Servicio %d ---\n", i+1);
-        printf("ID: %d\n", servicios[i].id);
-        printf("Nombre: %s\n", servicios[i].nombre);
-        printf("Descripcion: %s\n", servicios[i].descripcion);
-        printf("Duracion: %d min\n", servicios[i].duracion);
-        printf("Precio: %.2f €\n", servicios[i].precio);
-    }
 }
 
 void eliminarServicio(){
@@ -179,6 +137,61 @@ void eliminarServicio(){
     }
     printf("Servicio no encontrado\n");
 }
+
+void modificarServicio(){
+    int id;
+    printf("ID servicio a modificar: ");
+    scanf("%d", &id);
+    getchar();
+
+    for (int i = 0; i < numServicios; i++){
+
+        if (servicios[i].id == id){
+            printf("\n--- Modificando servicio: %s ---\n", servicios[i].nombre);
+            
+            printf("Nuevo nombre (actual: %s): ", servicios[i].nombre);
+            fgets(servicios[i].nombre, sizeof(servicios[i].nombre), stdin);
+            servicios[i].nombre[strcspn(servicios[i].nombre, "\n")] = '\0';
+
+            printf("Nueva descripcion (actual: %s): ", servicios[i].descripcion);
+            fgets(servicios[i].descripcion, sizeof(servicios[i].descripcion), stdin);
+            servicios[i].descripcion[strcspn(servicios[i].descripcion, "\n")] = '\0';
+
+            printf("Nueva duracion (actual: %d min): ", servicios[i].duracion);
+            scanf("%d", &servicios[i].duracion);
+            getchar();
+
+            printf("Nuevo precio (actual: %.2f €): ", servicios[i].precio);
+            scanf("%f", &servicios[i].precio);
+            getchar();
+
+            guardarServicios();
+            printf("Servicio modificado correctamente\n");
+            return;
+        }
+    }
+    printf("Servicio no encontrado\n");
+}
+
+void listarServicios() {
+    
+    if (numServicios == 0) {
+        printf("No hay servicios registrados\n");
+        return;
+    }
+    
+    printf("\n=== LISTADO DE SERVICIOS ===\n");
+    for (int i = 0; i < numServicios; i++){
+        printf("\n--- Servicio %d ---\n", i+1);
+        printf("ID: %d\n", servicios[i].id);
+        printf("Nombre: %s\n", servicios[i].nombre);
+        printf("Descripcion: %s\n", servicios[i].descripcion);
+        printf("Duracion: %d min\n", servicios[i].duracion);
+        printf("Precio: %.2f €\n", servicios[i].precio);
+    }
+}
+
+
 
 // ---- tema ficheros
 void guardarServicios(){

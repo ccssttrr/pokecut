@@ -38,7 +38,7 @@ void menuPrincipal(){
                 printf("Saliendo...\n");
                 break;
             default:
-                printf("Opcion invalida\n");
+                printf("Opcion invalida \n");
         }
     } while (op != 0);
 }

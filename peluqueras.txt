@@ -2,6 +2,6 @@
 2,Laura,Color,611222333,32.0
 3,Marta,Peinados,622333444,25.0
 4,Jon,Alisado,5544633,50.0
-10,Lorena,Alisado,6679933,0.0
-2,Ariana,Alisado,Japones,0.0
-11,Mariana,Color azul,667454545,0.0
+10,Lorena,Alisado,6679933,40.0
+2,Ariana,Alisado,Japones,36.0
+11,Mariana,Color azul,667454,15.0

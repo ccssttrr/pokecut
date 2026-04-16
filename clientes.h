@@ -7,6 +7,7 @@ typedef struct {
     int id;
     char nombre[50];
     char telefono[20];
+
 } Cliente;
 
 //puntero global que sirve para el array dinamico, el extern es para decirle que existen pero para que no los cree aqui, se crean en el .c
@@ -24,12 +25,14 @@ void editarCliente();
 void guardarClientes();
 void cargarClientes();
 
+int generarNuevoIdCliente();
+int existeIdCliente(int id);
+
 //memoria
 void liberarClientes();
 
 int existeCliente(int id);
 
-int generarNuevoIdCliente();
-int existeIdCliente(int id);
+
 
 #endif

@@ -17,6 +17,7 @@ extern int capacidadReservas;
 void menuReservas();
 void inicializarReservas();
 void crearReserva();
+
 void buscarReserva();
 void listarReservas();
 void cancelarReserva();

@@ -3,6 +3,7 @@
 #include "ficheros.h"
 
 int existeFichero(const char *ruta) {
+    
     FILE *f = fopen(ruta, "r");
     if (!f) return 0;
     fclose(f);

@@ -4,6 +4,7 @@
 #include "config.h"
 
 int main(){
+    
     inicializarSistema();
     cargarBD();
     if (!login()) {

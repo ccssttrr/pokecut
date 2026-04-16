@@ -46,7 +46,7 @@ int login() { //ponemos un log in al principio porque la app solo la van a usar 
 
     printf("     LOGIN ADMIN \n");
 
-    printf("Usuario: "); //el usuario y contraseña son: admin, se modifica en el config.txt
+    printf("Usuario: "); //el usuario y contraseña son: admin, se modifica en el config.txt. donde pone admin admin
     scanf("%s", user);
     printf("Password: ");
     scanf("%s", pass);

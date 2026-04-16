@@ -13,6 +13,7 @@ void menuClientes(){
     do{
         printf("1. Alta\n");
         printf("2. Buscar\n");
+
         printf("3. Editar\n");
         printf("4. Listar\n");
         printf("0. Volver\n");
@@ -33,6 +34,7 @@ void inicializarClientes(){
     numClientes = 0;
 
     clientes = malloc(capacidadClientes * sizeof(Cliente));
+
     if (!clientes) {
         printf("Error memoria\n");
         exit(1);
@@ -43,6 +45,7 @@ int generarNuevoIdCliente() {
     if (numClientes == 0) {
         return 1;   
     }
+
     
     int maxId = 0;
     for (int i = 0; i < numClientes; i++) {
@@ -59,6 +62,7 @@ int existeIdCliente(int id) {
             return 1;
         }
     }
+
     return 0;
 }
 
@@ -66,6 +70,7 @@ void altaCliente(){
     if (numClientes >= capacidadClientes){
         capacidadClientes *= 2;
         Cliente *temp = realloc(clientes, capacidadClientes * sizeof(Cliente));
+        
         if (!temp) {
             printf("Error memoria\n");
             exit(1);
@@ -93,6 +98,7 @@ void buscarCliente(){
     int id;
     printf("ID del cliente: \n");
     scanf(" %d", &id);
+    
     for (int i = 0; i < numClientes; i++){
         if (clientes[i].id == id) {
             printf("Nombre:%s, Tf:%s\n", clientes[i].nombre, clientes[i].telefono);
@@ -136,11 +142,13 @@ void editarCliente(){
             return;
         }
     }
+    
     printf("Cliente con ID %d no encontrado\n", id);
 }
 
 
 void listarClientes(){
+    
     for (int i = 0; i < numClientes; i++){
         printf("\n---Cliente numero %d----\n",i);
         printf("ID:%d, Nombre:%s, Tf:%s\n", clientes[i].id, clientes[i].nombre, clientes[i].telefono);
@@ -152,6 +160,7 @@ void listarClientes(){
 void guardarClientes() {
     FILE *f = fopen("clientes.txt", "w");
     if (!f) return;
+    
     for (int i = 0; i < numClientes; i++){
         fprintf(f, "%d,%s,%s\n",clientes[i].id,
             clientes[i].nombre,
@@ -167,6 +176,7 @@ void cargarClientes(){
     if (!f) return;
     numClientes = 0;
     capacidadClientes = 10;
+    
     clientes = malloc(capacidadClientes * sizeof(Cliente));
     Cliente c;
 
@@ -184,5 +194,6 @@ void cargarClientes(){
 }
 
 void liberarClientes() {
+    
     free(clientes);
 }
