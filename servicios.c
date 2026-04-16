@@ -13,7 +13,8 @@ void menuServicios(){
     int op;
     do{
 
-        printf("1. Alta\n2. Buscar\n3. Listar\n0. Volver\n");
+        printf("\n1. Alta\n2. Buscar\n3. Listar\n0. Volver\n");
+        printf("Opcion: ")
         scanf(" %d", &op);
 
         if (op == 1) altaServicio();

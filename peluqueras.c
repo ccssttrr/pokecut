@@ -13,14 +13,14 @@ void menuPeluqueras(){
     int id;
 
     do{
-        printf("1. Alta\n");
+        printf("\n1. Alta\n");
         printf("2. Buscar\n");
         printf("3. Editar\n");
         printf("4. Listar\n");
         printf("5. Fichar entrada\n");
         printf("6. Fichar salida\n");
         printf("0. Volver\n");
-        printf("Opción: ");
+        printf("Opcion: ");
         scanf("%d", &op);
         getchar();
 

@@ -6,3 +6,4 @@
 6,Corte,infantil,1980361296,-17.38
 6422020,Corte,infantil,40,30.00
 7,Corte infantil,Corte para ni¤os menores de 13,30,25.00
+8,Corte infantil,Corte para menores de 13,30,25.00

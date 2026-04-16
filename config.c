@@ -6,7 +6,7 @@
 
 Config config;
 
-void inicializarConfig() {
+void inicializarConfig(){
 
     strcpy(config.horarioApertura, "09:00");
     strcpy(config.horarioCierre, "20:00");
@@ -29,6 +29,7 @@ void cargarConfig(){
     }
     
     inicializarConfig();
+
     fscanf(f, "HorarioApertura=%s\n", config.horarioApertura);
     fscanf(f, "HorarioCierre=%s\n", config.horarioCierre);
     fscanf(f, "DuracionPorDefecto=%d\n", &config.duracionPorDefecto);
@@ -42,11 +43,14 @@ void cargarConfig(){
 }
 
 void guardarConfig(){
+
     FILE *f = fopen("config.txt", "w");
-    if (!f) {
+
+    if (!f){
         printf("Error al guardar config\n");
         return;
     }
+
     fprintf(f, "HorarioApertura=%s\n", config.horarioApertura);
     fprintf(f, "HorarioCierre=%s\n", config.horarioCierre);
     fprintf(f, "DuracionPorDefecto=%d\n", config.duracionPorDefecto);
@@ -60,8 +64,8 @@ void guardarConfig(){
 }
 
 void mostrarConfig(){
-    
-    printf("\n      CONFIGURACION\n");
+
+    printf("\nCONFIGURACION\n");
     printf("Horario apertura: %s\n", config.horarioApertura);
     printf("Horario cierre: %s\n", config.horarioCierre);
     printf("Duracion por defecto: %d minutos\n", config.duracionPorDefecto);

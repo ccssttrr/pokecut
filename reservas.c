@@ -18,7 +18,8 @@ void menuReservas(){
     int op;
 
     do{
-        printf("1. Crear\n2. Listar\n3. Buscar\n4. Cancelar\n0. Volver\n");
+        printf("\n1. Crear\n2. Listar\n3. Buscar\n4. Cancelar\n0. Volver\n");
+        printf("opcion: ")
         scanf("%d", &op);
 
         if (op == 1) crearReserva();

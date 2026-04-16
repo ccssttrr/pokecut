@@ -1,7 +1,8 @@
-1,Ana,Corte,600111222,60.0
+1,Ana,Corte,600111222,64.0
 2,Laura,Color,611222333,32.0
-3,Marta,Peinados,622333444,25.0
+3,Martita,Peinados,6656333,25.0
 4,Jon,Alisado,5544633,50.0
 10,Lorena,Alisado,6679933,40.0
 2,Ariana,Alisado,Japones,36.0
 11,Mariana,Color azul,667454,15.0
+12,Jose,Corte Caballero,55343453,0.0

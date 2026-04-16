@@ -11,13 +11,13 @@ int capacidadClientes = 0;
 void menuClientes(){
     int op;
     do{
-        printf("1. Alta\n");
+        printf("\n1. Alta\n");
         printf("2. Buscar\n");
 
         printf("3. Editar\n");
         printf("4. Listar\n");
         printf("0. Volver\n");
-        printf("Opción: ");
+        printf("Opcion: ");
         scanf("%d", &op);
 
         if (op == 1) altaCliente();
