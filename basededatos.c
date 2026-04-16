@@ -4,7 +4,7 @@
 #include "basededatos.h"
 
 //El modulo basededatos sirve para coordinar todo, centralizando la carga y guardado de datos de todos los modulos
-// por eso llamamos a todos los modulos y los usamos al cargar guardar y cerrar
+// por eso llamamos a todos los modulos y los usamos al cargar guardar y cerrar.
 #include "clientes.h"
 #include "peluqueras.h"
 #include "servicios.h"
