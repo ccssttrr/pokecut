@@ -8,16 +8,49 @@ Peluquera *peluqueras = NULL;
 int numPeluqueras = 0;
 int capacidadPeluqueras = 0;
 
+//para la resta de las horas trabajadas
+typedef struct {
+    int idPeluquera;
+    int horaEntrada;
+    int minutoEntrada;
+    int fichado;  //0 = no fichado, 1= fichado
+} EstadoFichaje;
+
+EstadoFichaje fichajes[100];
+int numFichajes = 0;
+
 void menuPeluqueras() {
     int op;
     do {
-        printf("\n--- PELUQUERAS ---\n");
-        printf("1. Alta\n2. Buscar\n3. Listar\n0. Volver\n");
+        printf("\n=== GESTIÓN DE PELUQUERAS ===\n");
+        printf("1. Alta\n");
+        printf("2. Buscar\n");
+        printf("3. Modificar\n");
+        printf("4. Listar\n");
+        printf("5. Fichar entrada\n");
+        printf("6. Fichar salida\n");
+        printf("0. Volver\n");
+        printf("Opcion: ");
         scanf("%d", &op);
+        getchar();
 
-        if      (op == 1) altaPeluquera();
+        if (op == 1) altaPeluquera();
         else if (op == 2) buscarPeluquera();
-        else if (op == 3) listarPeluqueras();
+        else if (op == 3) modificarPeluquera();
+        else if (op == 4) listarPeluqueras();
+        else if (op == 5) {
+            printf("ID de la peluquera: ");
+            scanf("%d", &id);
+            getchar();
+            ficharEntrada(id);
+        }
+        else if (op == 6) {
+            printf("ID de la peluquera: ");
+            scanf("%d", &id);
+            getchar();
+            ficharSalida(id);
+        }
+
 
     } while (op != 0);
 }
@@ -49,35 +82,48 @@ void altaPeluquera() {
     printf("Peluquera registrada.\n");
 }
 
-void buscarPeluquera() {
+void buscarPeluquera(){
     int id;
     printf("ID peluquera: ");
     scanf("%d", &id);
-    for (int i = 0; i < numPeluqueras; i++) {
+    getchar();
+    
+    for (int i = 0; i < numPeluqueras; i++){
         if (peluqueras[i].id == id) {
-            printf("Nombre: %s\nEspecialidad: %s\nTelefono: %s\nHoras: %d\n",
-                peluqueras[i].nombre, peluqueras[i].especialidad,
-                peluqueras[i].telefono, peluqueras[i].horasTrabajadas);
+            printf("\n--- PELUQUERA ENCONTRADA ---\n");
+            printf("ID: %d\n", peluqueras[i].id);
+            printf("Nombre: %s\n", peluqueras[i].nombre);
+            printf("Especialidad: %s\n", peluqueras[i].especialidad);
+            printf("Telefono: %s\n", peluqueras[i].telefono);
+            printf("Horas trabajadas: %.2f\n", peluqueras[i].horasTrabajadas);
             return;
         }
     }
-    printf("No encontrada.\n");
+    printf("Peluquera no encontrada.\n");
 }
 
-void listarPeluqueras() {
-    if (numPeluqueras == 0) { printf("No hay peluqueras.\n"); return; }
+void listarPeluqueras(){
+    if (numPeluqueras == 0){ 
+        printf("No hay peluqueras \n"); 
+        return; 
+    }
+    
+    printf("\n--- LISTADO DE PELUQUERAS ---\n");
     for (int i = 0; i < numPeluqueras; i++) {
-        printf("[%d] %s - %s - Horas: %d\n",
-            peluqueras[i].id, peluqueras[i].nombre,
-            peluqueras[i].especialidad, peluqueras[i].horasTrabajadas);
+        printf("\n--- Peluquera %d ---\n", i+1);
+        printf("ID: %d\n", peluqueras[i].id);
+        printf("Nombre: %s\n", peluqueras[i].nombre);
+        printf("Especialidad: %s\n", peluqueras[i].especialidad);
+        printf("Telefono: %s\n", peluqueras[i].telefono);
+        printf("Horas trabajadas: %.2f\n", peluqueras[i].horasTrabajadas);
     }
 }
 
-void modificarPeluquera() {
+void modificarPeluquera(){
     int id;
     printf("ID peluquera: ");
     scanf("%d", &id);
-    for (int i = 0; i < numPeluqueras; i++) {
+    for (int i = 0; i < numPeluqueras; i++){
         if (peluqueras[i].id == id) {
             printf("Nuevo nombre: ");       scanf("%49s", peluqueras[i].nombre);
             printf("Nueva especialidad: "); scanf("%49s", peluqueras[i].especialidad);
@@ -90,24 +136,142 @@ void modificarPeluquera() {
     printf("No encontrada.\n");
 }
 
-void ficharEntrada(int id) {
-    for (int i = 0; i < numPeluqueras; i++) {
-        if (peluqueras[i].id == id) {
-            printf("Entrada registrada.\n");
-            return;
+int buscarFichajeActivo(int idPeluquera){
+    for (int i = 0; i < numFichajes; i++){
+        if (fichajes[i].idPeluquera == idPeluquera && fichajes[i].fichado == 1) {
+            return i;
         }
     }
+    return -1;
+}
+
+void obtenerHoraActual(int *hora, int *minuto){
+    printf("Hora actual (hh mm): ");
+    scanf("%d %d", hora, minuto);
+    getchar();
+}
+
+float calcularHorasTrabajadas(int horaEntrada, int minEntrada, int horaSalida, int minSalida, int descansoMinutos){
+    int totalMinutosEntrada = horaEntrada * 60 + minEntrada;
+    int totalMinutosSalida = horaSalida * 60 + minSalida;
+    
+    int minutosTrabajados = totalMinutosSalida - totalMinutosEntrada - descansoMinutos;
+    
+    if (minutosTrabajados < 0) {
+        printf("Error: La hora de salida es anterior a la de entrada\n");
+        return 0;
+    }
+    
+    return minutosTrabajados / 60.0;
+}
+
+void ficharEntrada(int id) {
+    int encontrada = -1;
+    for (int i = 0; i < numPeluqueras; i++) {
+        if (peluqueras[i].id == id) {
+            encontrada = i;
+            break;
+        }
+    }
+    
+    if (encontrada == -1) {
+        printf("Peluquera con ID %d no encontrada\n", id);
+        return;
+    }
+    
+    //verificar si ya tiene un fichaje activo
+    if (buscarFichajeActivo(id) != -1) {
+        printf("Error: La peluquera ya tiene una entrada registrada sin salida\n");
+        return;
+    }
+    
+    int hora, minuto;
+    printf("--- FICHAJE DE ENTRADA ---\n");
+    printf("Peluquera: %s (ID: %d)\n", peluqueras[encontrada].nombre, id);
+    obtenerHoraActual(&hora, &minuto);
+    
+    if (numFichajes >= 100) {
+        printf("Error: Demasiados fichajes activos\n");
+        return;
+    }
+    
+    fichajes[numFichajes].idPeluquera = id;
+    fichajes[numFichajes].horaEntrada = hora;
+    fichajes[numFichajes].minutoEntrada = minuto;
+    fichajes[numFichajes].fichado = 1;
+    numFichajes++;
+    
+    printf("Entrada registrada para %s a las %02d:%02d\n", peluqueras[encontrada].nombre, hora, minuto);
 }
 
 void ficharSalida(int id) {
+    int encontrada = -1;
     for (int i = 0; i < numPeluqueras; i++) {
         if (peluqueras[i].id == id) {
-            peluqueras[i].horasTrabajadas += 8;
-            guardarPeluquera(peluqueras[i]);
-            printf("Salida registrada.\n");
-            return;
+            encontrada = i;
+            break;
         }
     }
+    
+    if (encontrada == -1) {
+        printf("Peluquera con ID %d no encontrada\n", id);
+        return;
+    }
+    
+    int idxFichaje = buscarFichajeActivo(id);
+    if (idxFichaje == -1) {
+        printf("Error: La peluquera no tiene una entrada registrada\n");
+        return;
+    }
+    
+    int hora, minuto;
+    int descansoMinutos = 0;
+    char descansoInput[10];
+    
+    printf("--- FICHAJE DE SALIDA ---\n");
+    printf("Peluquera: %s (ID: %d)\n", peluqueras[encontrada].nombre, id);
+    obtenerHoraActual(&hora, &minuto);
+    
+    //preguntar por tiempo de descanso
+    printf("¿Ha tenido descanso? (s/n): ");
+    fgets(descansoInput, sizeof(descansoInput), stdin);
+    descansoInput[strcspn(descansoInput, "\n")] = '\0';
+    
+    if (strcmp(descansoInput, "s") == 0 || strcmp(descansoInput, "S") == 0) {
+        int horasDescanso, minutosDescanso;
+        printf("Tiempo de descanso (horas minutos): ");
+        scanf("%d %d", &horasDescanso, &minutosDescanso);
+        getchar();
+        descansoMinutos = horasDescanso * 60 + minutosDescanso;
+        printf("Descanso registrado: %d hora(s) y %d minuto(s)\n", horasDescanso, minutosDescanso);
+    } else {
+        printf("No se registró descanso\n");
+    }
+    
+    //calculo de horas trabajadas
+    float horasTrabajadas = calcularHorasTrabajadas(
+        fichajes[idxFichaje].horaEntrada, 
+        fichajes[idxFichaje].minutoEntrada,
+        hora, minuto, 
+        descansoMinutos
+    );
+    
+    if (horasTrabajadas > 0) {
+        peluqueras[encontrada].horasTrabajadas += horasTrabajadas;
+        guardarPeluquera(peluqueras[encontrada]);
+        
+        printf("Salida registrada para %s\n", peluqueras[encontrada].nombre);
+        printf("Hora entrada: %02d:%02d\n", fichajes[idxFichaje].horaEntrada, fichajes[idxFichaje].minutoEntrada);
+        printf("Hora salida: %02d:%02d\n", hora, minuto);
+        printf("Descanso: %d minuto(s)\n", descansoMinutos);
+        printf("Horas trabajadas hoy: %.2f\n", horasTrabajadas);
+        printf("Total horas acumuladas: %.2f\n", peluqueras[encontrada].horasTrabajadas);
+    }
+    
+    for (int i = idxFichaje; i < numFichajes - 1; i++){
+        fichajes[i] = fichajes[i + 1];
+    }
+    numFichajes--;
 }
 
 // ---- SQLite ----

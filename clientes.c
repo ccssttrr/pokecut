@@ -38,10 +38,14 @@ void altaCliente() {
     }
 
     Cliente c;
-    printf("ID: ");        scanf("%d",  &c.id);
-    printf("Nombre: ");    scanf("%49s", c.nombre);
-    printf("Telefono: ");  scanf("%19s", c.telefono);
-    printf("Email: ");     scanf("%99s", c.email);
+    printf("ID: ");
+    scanf("%d",  &c.id);
+    printf("Nombre: ");
+    scanf("%49s", c.nombre);
+    printf("Telefono: ");
+    scanf("%19s", c.telefono);
+    printf("Email: ");
+    scanf("%99s", c.email);
 
     clientes[numClientes++] = c;
     guardarCliente(c);  // guarda solo este en SQLite
@@ -137,8 +141,7 @@ void cargarClientes() {
     if (!db) return;
     numClientes = 0;
     char *err = NULL;
-    sqlite3_exec(db, "SELECT id, nombre, telefono, email FROM clientes;",
-                 callbackCliente, NULL, &err);
+    sqlite3_exec(db, "SELECT id, nombre, telefono, email FROM clientes;", callbackCliente, NULL, &err);
     if (err) { printf("Error cargando clientes: %s\n", err); sqlite3_free(err); }
 }
 
