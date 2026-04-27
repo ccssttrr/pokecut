@@ -3,6 +3,7 @@
 #include <string.h>
 #include "peluqueras.h"
 #include "basededatos.h"
+#include "sqlite3.h"
 
 Peluquera *peluqueras = NULL;
 int numPeluqueras = 0;
@@ -21,8 +22,9 @@ int numFichajes = 0;
 
 void menuPeluqueras() {
     int op;
+    int id;
     do {
-        printf("\n=== GESTIÓN DE PELUQUERAS ===\n");
+        printf("\n--- GESTION DE PELUQUERAS ---\n");
         printf("1. Alta\n");
         printf("2. Buscar\n");
         printf("3. Modificar\n");
@@ -286,12 +288,14 @@ void guardarPeluquera(Peluquera p) {
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) return;
 
     sqlite3_bind_int (stmt, 1, p.id);
-    sqlite3_bind_text(stmt, 2, p.nombre,       -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 3, p.especialidad, -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 4, p.telefono,     -1, SQLITE_STATIC);
-    sqlite3_bind_int (stmt, 5, p.horasTrabajadas);
+    sqlite3_bind_text(stmt, 2, p.nombre, -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 3, p.especialidad, -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 4, p.telefono, -1, SQLITE_TRANSIENT);
+    sqlite3_bind_double(stmt, 5, p.horasTrabajadas);
 
-    sqlite3_step(stmt);
+    if (sqlite3_step(stmt) != SQLITE_DONE) {
+        printf("Error guardando peluquera: %s\n", sqlite3_errmsg(db));
+    }
     sqlite3_finalize(stmt);
 }
 
@@ -313,7 +317,7 @@ static int callbackPeluquera(void *unused, int cols, char **valores, char **nomb
     strncpy(p.nombre,       valores[1] ? valores[1] : "", 49);
     strncpy(p.especialidad, valores[2] ? valores[2] : "", 49);
     strncpy(p.telefono,     valores[3] ? valores[3] : "", 19);
-    p.horasTrabajadas = valores[4] ? atoi(valores[4]) : 0;
+    p.horasTrabajadas = valores[4] ? atof(valores[4]) : 0.0f;  // atof para float
 
     peluqueras[numPeluqueras++] = p;
     return 0;

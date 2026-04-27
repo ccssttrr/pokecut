@@ -22,7 +22,7 @@ static void crearTablas() {
         "   nombre           TEXT NOT NULL,"
         "   especialidad     TEXT NOT NULL,"
         "   telefono         TEXT NOT NULL,"
-        "   horas_trabajadas INTEGER NOT NULL DEFAULT 0"
+        "   horas_trabajadas REAL NOT NULL DEFAULT 0"
         ");"
 
         "CREATE TABLE IF NOT EXISTS servicios ("

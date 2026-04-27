@@ -6,7 +6,7 @@ typedef struct {
     char nombre[50];
     char especialidad[50];
     char telefono[20];
-    int  horasTrabajadas;
+    float  horasTrabajadas;
 } Peluquera;
 
 extern Peluquera *peluqueras;
