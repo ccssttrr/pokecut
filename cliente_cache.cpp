@@ -171,8 +171,7 @@ ServicioInfo Cache::buscarServicio(int id) const {
     return vacio;
 }
 
-bool Cache::crearReserva(int idCliente, int idPeluquera, int idServicio,
-                         const string& fecha, const string& hora) {
+bool Cache::crearReserva(int idCliente, int idPeluquera, int idServicio, const string& fecha, const string& hora) {
     stringstream comando;
     comando << "CREAR_RESERVA|" << idCliente << "|" << idPeluquera << "|" 
             << idServicio << "|" << fecha << "|" << hora;
