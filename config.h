@@ -16,6 +16,7 @@ typedef struct{
     char rutaLogs[100];
     char adminUser[50];
     char adminPass[50];
+    int puerto;
 } Config;
 
 // Variable global (declaración, NO definición)

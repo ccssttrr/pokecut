@@ -18,18 +18,22 @@ void inicializarConfig(){
     strcpy(config.adminPass, "1234");
 }
 
-void cargarConfig(){
-
-    FILE *f = fopen("config.txt", "r");
-
-    if (!f){
-        printf("No existe config.txt, usando valores por defecto\n");
-        inicializarConfig();
+void cargarConfig() {
+    FILE* f = fopen("config.txt", "r");
+    
+    if (!f) {
+        strcpy(config.horarioApertura, "09:00");
+        strcpy(config.horarioCierre, "20:00");
+        config.duracionPorDefecto = 60;
+        config.antelacionMaxima = 7;
+        strcpy(config.rutaBD, "peluqueria.db");
+        strcpy(config.rutaLogs, "servidor.log");
+        strcpy(config.adminUser, "admin");
+        strcpy(config.adminPass, "1234");
+        config.puerto = 8080;
         return;
     }
     
-    inicializarConfig();
-
     fscanf(f, "HorarioApertura=%s\n", config.horarioApertura);
     fscanf(f, "HorarioCierre=%s\n", config.horarioCierre);
     fscanf(f, "DuracionPorDefecto=%d\n", &config.duracionPorDefecto);
@@ -38,7 +42,8 @@ void cargarConfig(){
     fscanf(f, "RutaLogs=%s\n", config.rutaLogs);
     fscanf(f, "AdminUser=%s\n", config.adminUser);
     fscanf(f, "AdminPass=%s\n", config.adminPass);
-
+    fscanf(f, "Puerto=%d\n", &config.puerto);
+    
     fclose(f);
 }
 

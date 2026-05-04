@@ -1,22 +1,49 @@
 #include <stdio.h>
+#include <string.h>
 #include "basededatos.h"
 #include "clientes.h"
 #include "peluqueras.h"
 #include "servicios.h"
 #include "reservas.h"
 
-sqlite3 *db = NULL;  // conexion global
+sqlite3 *db = NULL;
 
-// Crea las tablas si no existen todavia
-static void crearTablas() {
+void inicializarBD() {
+    printf("Abriendo base de datos 'peluqueria.db'...\n");
+    int rc = sqlite3_open("peluqueria.db", &db);
+    if (rc != SQLITE_OK) {
+        printf("Error al abrir BD: %s\n", sqlite3_errmsg(db));
+        db = NULL;
+        return;
+    }
+    printf("Base de datos abierta correctamente\n");
+    
+    printf("Activando claves foráneas...\n");
+    char *err = NULL;
+    sqlite3_exec(db, "PRAGMA foreign_keys = ON;", NULL, NULL, &err);
+    if (err) {
+        printf("Error en PRAGMA: %s\n", err);
+        sqlite3_free(err);
+    }
+    
+    printf("Creando tablas si no existen...\n");
+    crearTablas();
+    
+    // Inicializar las estructuras de datos
+    inicializarClientes();
+    inicializarPeluqueras();
+    inicializarServicios();
+    inicializarReservas();
+}
+
+void crearTablas() {
     const char *sql =
         "CREATE TABLE IF NOT EXISTS clientes ("
         "   id       INTEGER PRIMARY KEY,"
         "   nombre   TEXT NOT NULL,"
-        "   telefono TEXT NOT NULL,"
-        "   email    TEXT"
+        "   telefono TEXT NOT NULL"
         ");"
-
+        
         "CREATE TABLE IF NOT EXISTS peluqueras ("
         "   id               INTEGER PRIMARY KEY,"
         "   nombre           TEXT NOT NULL,"
@@ -24,7 +51,7 @@ static void crearTablas() {
         "   telefono         TEXT NOT NULL,"
         "   horas_trabajadas REAL NOT NULL DEFAULT 0"
         ");"
-
+        
         "CREATE TABLE IF NOT EXISTS servicios ("
         "   id          INTEGER PRIMARY KEY,"
         "   nombre      TEXT NOT NULL,"
@@ -32,7 +59,7 @@ static void crearTablas() {
         "   duracion    INTEGER NOT NULL,"
         "   precio      REAL NOT NULL"
         ");"
-
+        
         "CREATE TABLE IF NOT EXISTS reservas ("
         "   id_reserva   INTEGER PRIMARY KEY,"
         "   id_cliente   INTEGER NOT NULL,"
@@ -46,51 +73,45 @@ static void crearTablas() {
         ");";
 
     char *err = NULL;
-    if (sqlite3_exec(db, sql, NULL, NULL, &err) != SQLITE_OK) {
-        printf("Error creando tablas: %s\n", err);
-        sqlite3_free(err);
-    }
-}
-
-void inicializarBD() {
-    int rc = sqlite3_open("peluqueria.db", &db);
+    int rc = sqlite3_exec(db, sql, NULL, NULL, &err);
     if (rc != SQLITE_OK) {
-        printf("Error: %s\n", sqlite3_errmsg(db));
-        db = NULL;
-        return;
-    }
-
-    char *err = NULL;
-    sqlite3_exec(db, "CREATE TABLE IF NOT EXISTS test (id INTEGER);", NULL, NULL, &err);
-    if (err) {
-        printf("Error forzando escritura: %s\n", err);
+        printf("    ❌ Error creando tablas: %s\n", err);
         sqlite3_free(err);
+    } else {
+        printf("Tablas verificadas/creadas correctamente\n");
     }
-
-    sqlite3_exec(db, "PRAGMA foreign_keys = ON;", NULL, NULL, NULL);
-    crearTablas();
 }
 
 void cargarBD() {
+    printf("Cargando clientes...\n");
     cargarClientes();
+    printf("Cargando peluqueras...\n");
     cargarPeluqueras();
+    printf(" servicios...\n");
     cargarServicios();
+    printf("Cargando reservas...\n");
     cargarReservas();
+    printf("Base de datos cargada completamente\n");
 }
 
 void guardarBD() {
-    // Con SQLite cada operacion ya guarda en el momento
-    // Esta funcion se mantiene por compatibilidad con el resto del codigo
+    // SQLite guarda automáticamente, pero forzamos escritura
+    if (db) {
+        sqlite3_exec(db, "PRAGMA wal_checkpoint;", NULL, NULL, NULL);
+    }
 }
 
 void cerrarBD() {
+    printf("Liberando memoria de estructuras...\n");
     liberarClientes();
     liberarPeluqueras();
     liberarServicios();
     liberarReservas();
 
     if (db) {
+        printf("Cerrando base de datos...\n");
         sqlite3_close(db);
         db = NULL;
+        printf("Base de datos cerrada\n");
     }
 }

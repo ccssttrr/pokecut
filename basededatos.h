@@ -3,11 +3,13 @@
 
 #include "sqlite3.h"
 
-extern sqlite3 *db;  // conexion global, la usan todos los modulos
+extern sqlite3 *db;
 
 void inicializarBD();
 void cargarBD();
 void guardarBD();
 void cerrarBD();
+
+void crearTablas();
 
 #endif

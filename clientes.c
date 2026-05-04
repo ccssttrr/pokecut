@@ -26,7 +26,11 @@ void inicializarClientes() {
     capacidadClientes = 10;
     numClientes = 0;
     clientes = malloc(capacidadClientes * sizeof(Cliente));
-    if (!clientes) { printf("Error memoria\n"); exit(1); }
+    if (!clientes) {
+        printf("Error de memoria en inicializarClientes\n");
+        exit(1);
+    }
+    printf("Clientes inicializados con capacidad %d\n", capacidadClientes);
 }
 
 void altaCliente() {
@@ -120,30 +124,87 @@ void guardarClientes() {
 
 // Callback que recibe cada fila de SQLite y la mete en el array
 static int callbackCliente(void *unused, int cols, char **valores, char **nombres) {
-    (void)unused; (void)cols; (void)nombres;
-
+    (void)unused;
+    (void)cols;
+    (void)nombres;
+    
     if (numClientes >= capacidadClientes) {
         capacidadClientes *= 2;
-        clientes = realloc(clientes, capacidadClientes * sizeof(Cliente));
+        Cliente *temp = realloc(clientes, capacidadClientes * sizeof(Cliente));
+        if (!temp) {
+            printf("Error de memoria en callbackCliente\n");
+            return 1;
+        }
+        clientes = temp;
     }
-
+    
     Cliente c;
     c.id = atoi(valores[0]);
-    strncpy(c.nombre,   valores[1] ? valores[1] : "", 49);
+    strncpy(c.nombre, valores[1] ? valores[1] : "", 49);
     strncpy(c.telefono, valores[2] ? valores[2] : "", 19);
-    strncpy(c.email,    valores[3] ? valores[3] : "", 99);
-
+    c.nombre[49] = '\0';
+    c.telefono[19] = '\0';
+    
     clientes[numClientes++] = c;
+    
     return 0;
 }
 
 void cargarClientes() {
-    if (!db) return;
-    numClientes = 0;
-    char *err = NULL;
-    sqlite3_exec(db, "SELECT id, nombre, telefono, email FROM clientes;", callbackCliente, NULL, &err);
-    if (err) { printf("Error cargando clientes: %s\n", err); sqlite3_free(err); }
+    printf("        Ejecutando consulta SELECT...\n");
+    
+    if (!db) {
+        printf("        ❌ Error: db es NULL\n");
+        return;
+    }
+    
+    // Asegurar que clientes está inicializado
+    if (clientes == NULL) {
+        printf("        Inicializando clientes antes de cargar...\n");
+        inicializarClientes();
+    }
+    
+    printf("        Preparando consulta...\n");
+    sqlite3_stmt *stmt;
+    const char *sql = "SELECT id, nombre, telefono FROM clientes;";
+    
+    int rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+    if (rc != SQLITE_OK) {
+        printf("        ❌ Error preparando consulta: %s\n", sqlite3_errmsg(db));
+        return;
+    }
+    printf("        Consulta preparada correctamente\n");
+    
+    printf("        Ejecutando consulta...\n");
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        if (numClientes >= capacidadClientes) {
+            int nuevaCapacidad = capacidadClientes * 2;
+            printf("        Ampliando memoria: %d -> %d\n", capacidadClientes, nuevaCapacidad);
+            Cliente *temp = realloc(clientes, nuevaCapacidad * sizeof(Cliente));
+            if (!temp) {
+                printf("        ❌ Error de memoria en realloc\n");
+                sqlite3_finalize(stmt);
+                return;
+            }
+            clientes = temp;
+            capacidadClientes = nuevaCapacidad;
+        }
+        
+        Cliente c;
+        c.id = sqlite3_column_int(stmt, 0);
+        strncpy(c.nombre, (const char*)sqlite3_column_text(stmt, 1), 49);
+        strncpy(c.telefono, (const char*)sqlite3_column_text(stmt, 2), 19);
+        c.nombre[49] = '\0';
+        c.telefono[19] = '\0';
+        
+        clientes[numClientes++] = c;
+        printf("        Cliente cargado: ID=%d, Nombre=%s\n", c.id, c.nombre);
+    }
+    
+    sqlite3_finalize(stmt);
+    printf("        ✅ Clientes cargados correctamente. Total: %d\n", numClientes);
 }
+
 
 void liberarClientes() {
     free(clientes);
@@ -151,3 +212,4 @@ void liberarClientes() {
     numClientes = 0;
     capacidadClientes = 0;
 }
+
