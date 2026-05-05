@@ -14,3 +14,92 @@
 [2026-05-04 18:40:06] === SERVIDOR INICIADO ===
 [2026-05-04 18:41:49] === SERVIDOR INICIADO ===
 [2026-05-04 18:41:49] Servidor escuchando en puerto 8081
+[2026-05-05 16:35:58] === SERVIDOR INICIADO ===
+[2026-05-05 16:35:58] Servidor escuchando en puerto 8081
+[2026-05-05 16:36:57] Cliente conectado
+[2026-05-05 16:36:57] Comando recibido: GET_CLIENTES
+[2026-05-05 16:36:57] Comando recibido: 
+[2026-05-05 16:36:57] Comando recibido: GET_PELUQUERAS
+[2026-05-05 16:36:57] Comando recibido: 
+[2026-05-05 16:36:57] Comando recibido: GET_SERVICIOS
+[2026-05-05 16:36:57] Comando recibido: 
+[2026-05-05 16:37:27] Comando recibido: GET_HORARIOS|01/02/2026
+[2026-05-05 16:37:27] Comando recibido: 
+[2026-05-05 16:37:35] Comando recibido: MIS_RESERVAS|1
+[2026-05-05 16:37:35] Comando recibido: 
+[2026-05-05 16:38:00] Cliente desconectado
+[2026-05-05 16:59:43] Servidor apagado por señal
+[2026-05-05 16:59:58] === SERVIDOR INICIADO ===
+[2026-05-05 16:59:58] Servidor escuchando en puerto 8081
+[2026-05-05 17:00:10] Cliente conectado
+[2026-05-05 17:00:10] Comando recibido: GET_CLIENTES
+[2026-05-05 17:00:10] Comando recibido: 
+[2026-05-05 17:00:10] Comando recibido: GET_PELUQUERAS
+[2026-05-05 17:00:10] Comando recibido: 
+[2026-05-05 17:00:10] Comando recibido: GET_SERVICIOS
+[2026-05-05 17:00:10] Comando recibido: 
+[2026-05-05 17:02:29] Servidor apagado por señal
+[2026-05-05 17:02:39] Cliente desconectado
+[2026-05-05 17:06:07] === SERVIDOR INICIADO ===
+[2026-05-05 17:06:07] Servidor escuchando en puerto 8081
+[2026-05-05 17:06:16] Cliente conectado
+[2026-05-05 17:06:16] Comando recibido: GET_CLIENTES
+[2026-05-05 17:06:16] Comando recibido: GET_CLIENTES
+[2026-05-05 17:06:16] Comando recibido: 
+[2026-05-05 17:06:16] Comando recibido: 
+[2026-05-05 17:06:16] Comando recibido: GET_PELUQUERAS
+[2026-05-05 17:06:16] Comando recibido: GET_PELUQUERAS
+[2026-05-05 17:06:16] Comando recibido: 
+[2026-05-05 17:06:16] Comando recibido: 
+[2026-05-05 17:06:37] Comando recibido: GET_HORARIOS|01-23-2006
+[2026-05-05 17:06:37] Comando recibido: GET_HORARIOS|01-23-2006
+[2026-05-05 17:06:37] Comando recibido: 
+[2026-05-05 17:06:37] Comando recibido: 
+[2026-05-05 17:07:05] Comando recibido: CREAR_RESERVA|1|2|1|12/03/2026|12:00
+[2026-05-05 17:07:05] Comando recibido: CREAR_RESERVA|1|2|1|12/03/2026|12:00
+[2026-05-05 17:07:05] Comando recibido: 
+[2026-05-05 17:07:05] Comando recibido: 
+[2026-05-05 17:07:12] Comando recibido: MIS_RESERVAS|1
+[2026-05-05 17:07:12] Comando recibido: MIS_RESERVAS|1
+[2026-05-05 17:07:12] Comando recibido: 
+[2026-05-05 17:07:12] Comando recibido: 
+[2026-05-05 17:07:15] Comando recibido: MIS_RESERVAS|0
+[2026-05-05 17:07:15] Comando recibido: MIS_RESERVAS|0
+[2026-05-05 17:07:15] Comando recibido: 
+[2026-05-05 17:07:15] Comando recibido: 
+[2026-05-05 17:07:23] Comando recibido: MIS_RESERVAS|1
+[2026-05-05 17:07:23] Comando recibido: MIS_RESERVAS|1
+[2026-05-05 17:07:23] Comando recibido: 
+[2026-05-05 17:07:23] Comando recibido: 
+[2026-05-05 17:07:29] Comando recibido: CANCELAR_RESERVA|400
+[2026-05-05 17:07:29] Comando recibido: CANCELAR_RESERVA|400
+[2026-05-05 17:07:29] Comando recibido: 
+[2026-05-05 17:07:29] Comando recibido: 
+[2026-05-05 17:07:33] Cliente desconectado
+[2026-05-05 17:07:42] Servidor apagado por señal
+[2026-05-05 17:12:17] === SERVIDOR INICIADO ===
+[2026-05-05 17:12:17] Servidor escuchando en puerto 8081
+[2026-05-05 17:12:32] Cliente conectado
+[2026-05-05 17:12:32] Comando recibido: GET_CLIENTES
+[2026-05-05 17:12:32] Comando recibido: GET_CLIENTES
+[2026-05-05 17:12:32] Comando recibido: 
+[2026-05-05 17:12:32] Comando recibido: 
+[2026-05-05 17:12:32] Comando recibido: GET_PELUQUERAS
+[2026-05-05 17:12:32] Comando recibido: GET_PELUQUERAS
+[2026-05-05 17:12:32] Comando recibido: 
+[2026-05-05 17:12:32] Comando recibido: 
+[2026-05-05 17:12:32] Comando recibido: GET_SERVICIOS
+[2026-05-05 17:12:32] Comando recibido: GET_SERVICIOS
+[2026-05-05 17:13:06] Servidor apagado por senal
+[2026-05-05 17:14:05] === SERVIDOR INICIADO ===
+[2026-05-05 17:14:05] Servidor escuchando en puerto 8081
+[2026-05-05 17:14:11] Cliente conectado
+[2026-05-05 17:14:11] Comando recibido: GET_CLIENTES
+[2026-05-05 17:14:11] Comando recibido: GET_CLIENTES
+[2026-05-05 17:14:11] Comando recibido: 
+[2026-05-05 17:14:11] Comando recibido: 
+[2026-05-05 17:14:11] Comando recibido: GET_PELUQUERAS
+[2026-05-05 17:14:11] Comando recibido: GET_PELUQUERAS
+[2026-05-05 17:14:11] Comando recibido: GET_SERVICIOS
+[2026-05-05 17:14:11] Comando recibido: GET_SERVICIOS
+[2026-05-05 17:19:42] Servidor apagado por senal

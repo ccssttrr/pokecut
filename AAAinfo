@@ -1,0 +1,12 @@
+Para poder ejecutarlo en CMD hay q primero, abrir un cmd y poner:
+
+g++ -D_WIN32_WINNT=0x0600 -D_WIN32 -DWIN32_LEAN_AND_MEAN cliente.cpp cliente_red.cpp cliente_cache.cpp cliente_menu.cpp -o servidor.exe -lws2_32
+
+y cuando cargue, poner. "servidor.exe" para que se inicie
+
+luego sin cerrar el anterior, hay que abrir otro cmd y abrir "cliente.exe"
+
+para poder cerrar todo y ejecutarlo otra vez, hay que:
+
+    1: En cliente.exe darle a la opcion "0" para cerrar el programa
+    2: ctrl + c o enter donde se ha abierto el servidor para cerrarlo

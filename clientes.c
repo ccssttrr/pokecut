@@ -151,38 +151,38 @@ static int callbackCliente(void *unused, int cols, char **valores, char **nombre
 }
 
 void cargarClientes() {
-    printf("        Ejecutando consulta SELECT...\n");
+    printf("Ejecutando consulta SELECT...\n");
     
     if (!db) {
-        printf("        ❌ Error: db es NULL\n");
+        printf("Error: db es NULL\n");
         return;
     }
     
     // Asegurar que clientes está inicializado
     if (clientes == NULL) {
-        printf("        Inicializando clientes antes de cargar...\n");
+        printf("Inicializando clientes antes de cargar...\n");
         inicializarClientes();
     }
     
-    printf("        Preparando consulta...\n");
+    printf("Preparando consulta...\n");
     sqlite3_stmt *stmt;
     const char *sql = "SELECT id, nombre, telefono FROM clientes;";
     
     int rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
     if (rc != SQLITE_OK) {
-        printf("        ❌ Error preparando consulta: %s\n", sqlite3_errmsg(db));
+        printf("Error preparando consulta: %s\n", sqlite3_errmsg(db));
         return;
     }
-    printf("        Consulta preparada correctamente\n");
+    printf("Consulta preparada correctamente\n");
     
-    printf("        Ejecutando consulta...\n");
+    printf("Ejecutando consulta...\n");
     while (sqlite3_step(stmt) == SQLITE_ROW) {
         if (numClientes >= capacidadClientes) {
             int nuevaCapacidad = capacidadClientes * 2;
-            printf("        Ampliando memoria: %d -> %d\n", capacidadClientes, nuevaCapacidad);
+            printf("Ampliando memoria: %d -> %d\n", capacidadClientes, nuevaCapacidad);
             Cliente *temp = realloc(clientes, nuevaCapacidad * sizeof(Cliente));
             if (!temp) {
-                printf("        ❌ Error de memoria en realloc\n");
+                printf("Error de memoria en realloc\n");
                 sqlite3_finalize(stmt);
                 return;
             }
@@ -198,11 +198,11 @@ void cargarClientes() {
         c.telefono[19] = '\0';
         
         clientes[numClientes++] = c;
-        printf("        Cliente cargado: ID=%d, Nombre=%s\n", c.id, c.nombre);
+        printf("Cliente cargado: ID=%d, Nombre=%s\n", c.id, c.nombre);
     }
     
     sqlite3_finalize(stmt);
-    printf("        ✅ Clientes cargados correctamente. Total: %d\n", numClientes);
+    printf("Clientes cargados correctamente. Total: %d\n", numClientes);
 }
 
 

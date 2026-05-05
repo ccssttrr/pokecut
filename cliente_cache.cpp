@@ -59,10 +59,13 @@ void Cache::cargarClientes() {
     }
     
     clientesCargados = true;
+    cout << "Clientes cargados: " << clientes.size() << endl;
 }
 
 void Cache::cargarPeluqueras() {
+    cout << "DEBUG: Enviando comando GET_PELUQUERAS" << endl;
     string respuesta = cliente.enviarComando("GET_PELUQUERAS");
+    cout << "DEBUG: Respuesta recibida: '" << respuesta << "'" << endl;
     
     if (respuesta.substr(0, 7) != "200|OK|") {
         cerr << "Error cargando peluqueras: " << respuesta << endl;
@@ -94,6 +97,7 @@ void Cache::cargarPeluqueras() {
     }
     
     peluquerasCargados = true;
+    cout << "Peluqueras cargadas: " << peluqueras.size() << endl;
 }
 
 void Cache::cargarServicios() {
@@ -130,6 +134,7 @@ void Cache::cargarServicios() {
     }
     
     serviciosCargados = true;
+    cout << "Servicios cargados: " << servicios.size() << endl;
 }
 
 const vector<ClienteInfo>& Cache::getClientes() const {
@@ -202,6 +207,10 @@ vector<ReservaInfo> Cache::getMisReservas(int idCliente) {
     }
     
     string datos = respuesta.substr(7);
+    if (datos.empty()) {
+        return reservas;
+    }
+    
     stringstream ss(datos);
     string item;
     

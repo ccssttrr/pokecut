@@ -88,17 +88,14 @@ string ClienteRed::enviarComando(const string& comando) {
     if (!conectado) {
         return "ERROR|No conectado al servidor";
     }
-    
-    // Enviar comando
     #ifdef _WIN32
-        send(socket_fd, comando.c_str(), comando.length(), 0);
+        send(socket_fd, comando.c_str(), (int)comando.length(), 0);
         send(socket_fd, "\n", 1, 0);
     #else
         write(socket_fd, comando.c_str(), comando.length());
         write(socket_fd, "\n", 1);
     #endif
     
-    // Recibir respuesta
     char buffer[4096];
     memset(buffer, 0, sizeof(buffer));
     

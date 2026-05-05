@@ -28,20 +28,26 @@ void atenderCliente(int socket_cliente) {
 
 
 char* procesarComando(const char* comando) {
+    printf("DEBUG: Comando recibido: '%s'\n", comando);
+    escribirLog("Comando recibido: %s", comando);
+    
     char copia[512];
     strcpy(copia, comando);
     
     char* cmd = strtok(copia, "|");
     
     if (cmd == NULL) {
+        printf("DEBUG: Comando vacío o NULL\n");
         return strdup("400|ERROR|Comando vacío");
     }
     
-    // Comandos GET
+    printf("DEBUG: Comando parseado: '%s'\n", cmd);
+    
     if (strcmp(cmd, "GET_CLIENTES") == 0) {
         return cmd_getClientes();
     }
     else if (strcmp(cmd, "GET_PELUQUERAS") == 0) {
+        printf("DEBUG: Procesando GET_PELUQUERAS\n");
         return cmd_getPeluqueras();
     }
     else if (strcmp(cmd, "GET_SERVICIOS") == 0) {
@@ -52,7 +58,6 @@ char* procesarComando(const char* comando) {
         if (!fecha) return strdup("400|ERROR|Falta fecha");
         return cmd_getHorarios(fecha);
     }
-    // Comandos de reservas
     else if (strcmp(cmd, "CREAR_RESERVA") == 0) {
         char* id_cliente = strtok(NULL, "|");
         char* id_peluquera = strtok(NULL, "|");
@@ -63,8 +68,7 @@ char* procesarComando(const char* comando) {
         if (!id_cliente || !id_peluquera || !id_servicio || !fecha || !hora) {
             return strdup("400|ERROR|Faltan parámetros");
         }
-        return cmd_crearReserva(atoi(id_cliente), atoi(id_peluquera), 
-                                atoi(id_servicio), fecha, hora);
+        return cmd_crearReserva(atoi(id_cliente), atoi(id_peluquera),  atoi(id_servicio), fecha, hora);
     }
     else if (strcmp(cmd, "MIS_RESERVAS") == 0) {
         char* id_cliente = strtok(NULL, "|");
@@ -76,14 +80,12 @@ char* procesarComando(const char* comando) {
         if (!id_reserva) return strdup("400|ERROR|Falta ID reserva");
         return cmd_cancelarReserva(atoi(id_reserva));
     }
-    //autenticiacion
     else if (strcmp(cmd, "LOGIN") == 0) {
         char* usuario = strtok(NULL, "|");
         char* pass = strtok(NULL, "|");
         if (!usuario || !pass) return strdup("400|ERROR|Faltan credenciales");
         return cmd_login(usuario, pass);
     }
-    //ping para verificar conexion
     else if (strcmp(cmd, "PING") == 0) {
         return strdup("200|OK|pong");
     }
@@ -127,6 +129,7 @@ char* cmd_getPeluqueras() {
         return strdup("200|OK|");
     }
     
+    //calcular el tamaño necesario
     size_t tam = 50;
     for (int i = 0; i < numPeluqueras; i++) {
         tam += strlen(peluqueras[i].nombre) + strlen(peluqueras[i].especialidad) + strlen(peluqueras[i].telefono) + 50;
@@ -138,7 +141,7 @@ char* cmd_getPeluqueras() {
     strcpy(buffer, "200|OK|");
     
     for (int i = 0; i < numPeluqueras; i++) {
-        char temp[256];
+        char temp[512];
         sprintf(temp, "%d,%s,%s,%s,%.1f;", 
                 peluqueras[i].id, 
                 peluqueras[i].nombre, 
@@ -167,7 +170,7 @@ char* cmd_getServicios() {
     strcpy(buffer, "200|OK|");
     
     for (int i = 0; i < numServicios; i++) {
-        char temp[256];
+        char temp[512];
         sprintf(temp, "%d,%s,%s,%d,%.2f;", 
                 servicios[i].id, 
                 servicios[i].nombre, 
@@ -181,10 +184,9 @@ char* cmd_getServicios() {
 }
 
 char* cmd_getHorarios(const char* fecha) {
-    //por simplicidad, devolvemos horarios predefinidos
-    (void)fecha;//para evitar warning
+    (void)fecha;  // Evitar warning
     
-    //Horarios disponibles: cada hora en punto de 9 a 20
+    //por ahora devolvemos horarios fijos
     return strdup("200|OK|09:00,10:00,11:00,12:00,13:00,16:00,17:00,18:00,19:00");
 }
 
@@ -236,7 +238,7 @@ char* cmd_misReservas(int id_cliente) {
     }
     
     if (encontradas == 0) {
-        return strdup("200|OK|No tienes reservas");
+        return strdup("200|OK|");
     }
     
     return strdup(buffer);
