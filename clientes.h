@@ -18,7 +18,7 @@ void altaCliente();
 void buscarCliente();
 void listarClientes();
 void modificarCliente();
-
+void eliminarCliente(); 
 void guardarCliente(Cliente c);   // guarda uno solo
 void guardarClientes();           // guarda todos
 void cargarClientes();

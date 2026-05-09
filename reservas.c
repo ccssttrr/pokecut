@@ -74,11 +74,30 @@ void crearReserva() {
     printf("Fecha (dd/mm/aaaa): "); scanf("%19s", r.fecha);
     printf("Hora (hh:mm): ");       scanf("%9s",  r.hora);
 
+    //Esto para asegurar q la fecha esta bien
+    int d, m, a, hh, mm;
+    if (sscanf(r.fecha, "%d/%d/%d", &d, &m, &a) != 3 || m < 1 || m > 12 || d < 1 || d > 31) {
+        printf("Fecha invalida. Usa el formato dd/mm/aaaa.\n");
+        return;
+    }
+    if (sscanf(r.hora, "%d:%d", &hh, &mm) != 2 || hh < 0 || hh > 23 || mm < 0 || mm > 59) {
+        printf("Hora invalida. Usa el formato hh:mm.\n");
+        return;
+    }
+
+    for (int i = 0; i < numReservas; i++) {
+        if (reservas[i].idPeluquera == r.idPeluquera &&
+            strcmp(reservas[i].fecha, r.fecha) == 0 &&
+            strcmp(reservas[i].hora,  r.hora)  == 0) {
+            printf("La peluquera ya tiene una reserva en ese horario.\n");
+            return;
+        }
+    }
+
     reservas[numReservas++] = r;
     guardarReserva(r);
     printf("Reserva creada.\n");
 }
-
 void buscarReserva() {
     int id;
     printf("ID reserva: ");

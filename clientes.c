@@ -12,12 +12,14 @@ void menuClientes() {
     int op;
     do {
         printf("\n--- CLIENTES ---\n");
-        printf("1. Alta\n2. Buscar\n3. Listar\n0. Volver\n");
+        printf("1. Alta\n2. Buscar\n3. Listar\n 4. Modificar\n5. Eliminar\n0. Volver\n");
         scanf("%d", &op);
 
         if      (op == 1) altaCliente();
         else if (op == 2) buscarCliente();
         else if (op == 3) listarClientes();
+        else if (op == 4) modificarCliente();
+        else if (op == 5) eliminarCliente();
 
     } while (op != 0);
 }
@@ -94,7 +96,20 @@ void modificarCliente() {
     }
     printf("No encontrado.\n");
 }
-
+void eliminarCliente() {
+    int id;
+    printf("ID cliente: ");
+    scanf("%d", &id);
+    for (int i = 0; i < numClientes; i++) {
+        if (clientes[i].id == id) {
+            clientes[i] = clientes[numClientes - 1];  
+            numClientes--;
+            printf("Cliente eliminado.\n");
+            return;
+        }
+    }
+    printf("No encontrado.\n");
+}
 // ---- SQLite ----
 
 // Guarda (inserta o actualiza) un cliente en la BD
