@@ -26,7 +26,7 @@ void menuPrincipal(Cache& cache) {
         cout << "================================" << endl;
         cout << "Opcion: ";
         cin >> opcion;
-        cin.ignore();
+        cin.ignore(1000, '\n');
         
         switch (opcion) {
             case 1:

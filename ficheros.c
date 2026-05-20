@@ -10,7 +10,7 @@ int existeFichero(const char *ruta) {
     return 1;
 }
 
-void escribirLog(const char *mensaje) {
+void escribirLogArchivo(const char *mensaje) {
     FILE *f = fopen("logs.txt", "a");
     if (!f) return;
 

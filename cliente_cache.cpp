@@ -32,7 +32,7 @@ void Cache::limpiarCache() {
 void Cache::cargarClientes() {
     string respuesta = cliente.enviarComando("GET_CLIENTES");
     
-    if (respuesta.substr(0, 7) != "200|OK|") {
+    if (respuesta.find("200|OK|") != 0) {
         cerr << "Error cargando clientes: " << respuesta << endl;
         return;
     }
@@ -63,11 +63,9 @@ void Cache::cargarClientes() {
 }
 
 void Cache::cargarPeluqueras() {
-    cout << "DEBUG: Enviando comando GET_PELUQUERAS" << endl;
     string respuesta = cliente.enviarComando("GET_PELUQUERAS");
-    cout << "DEBUG: Respuesta recibida: '" << respuesta << "'" << endl;
     
-    if (respuesta.substr(0, 7) != "200|OK|") {
+    if (respuesta.find("200|OK|") != 0) {
         cerr << "Error cargando peluqueras: " << respuesta << endl;
         return;
     }
@@ -103,7 +101,7 @@ void Cache::cargarPeluqueras() {
 void Cache::cargarServicios() {
     string respuesta = cliente.enviarComando("GET_SERVICIOS");
     
-    if (respuesta.substr(0, 7) != "200|OK|") {
+    if (respuesta.find("200|OK|") != 0) {
         cerr << "Error cargando servicios: " << respuesta << endl;
         return;
     }
@@ -183,7 +181,7 @@ bool Cache::crearReserva(int idCliente, int idPeluquera, int idServicio, const s
     
     string respuesta = cliente.enviarComando(comando.str());
     
-    if (respuesta.substr(0, 7) == "200|OK|") {
+    if (respuesta.find("200|OK|") == 0) {
         reservasPorCliente.erase(idCliente);
         return true;
     }
@@ -202,7 +200,7 @@ vector<ReservaInfo> Cache::getMisReservas(int idCliente) {
     
     vector<ReservaInfo> reservas;
     
-    if (respuesta.substr(0, 7) != "200|OK|") {
+    if (respuesta.find("200|OK|") != 0) {
         return reservas;
     }
     
@@ -244,7 +242,8 @@ bool Cache::cancelarReserva(int idReserva) {
     
     string respuesta = cliente.enviarComando(comando.str());
     
-    if (respuesta.substr(0, 7) == "200|OK|") {
+    if (respuesta.find("200|OK|") == 0) {
+        
         for (auto& par : reservasPorCliente) {
             for (auto it = par.second.begin(); it != par.second.end(); ++it) {
                 if (it->id == idReserva) {
@@ -270,7 +269,7 @@ vector<string> Cache::getHorarios(const string& fecha) {
     
     vector<string> horarios;
     
-    if (respuesta.substr(0, 7) != "200|OK|") {
+    if (respuesta.find("200|OK|") != 0) {
         return horarios;
     }
     
