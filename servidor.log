@@ -103,3 +103,24 @@
 [2026-05-05 17:14:11] Comando recibido: GET_SERVICIOS
 [2026-05-05 17:14:11] Comando recibido: GET_SERVICIOS
 [2026-05-05 17:19:42] Servidor apagado por senal
+[2026-05-20 12:45:57] === SERVIDOR INICIADO ===
+[2026-05-20 12:45:57] Servidor escuchando en puerto 8081
+[2026-05-20 12:46:08] Cliente conectado
+[2026-05-20 12:46:08] Comando recibido: GET_CLIENTES
+[2026-05-20 12:46:08] Comando recibido: GET_CLIENTES
+[2026-05-20 12:46:08] Comando recibido: 
+[2026-05-20 12:46:08] Comando recibido: 
+[2026-05-20 12:46:08] Comando recibido: GET_PELUQUERAS
+[2026-05-20 12:46:08] Comando recibido: GET_PELUQUERAS
+[2026-05-20 12:46:08] Comando recibido: 
+[2026-05-20 12:46:08] Comando recibido: 
+[2026-05-20 12:46:08] Comando recibido: GET_SERVICIOS
+[2026-05-20 12:46:08] Comando recibido: GET_SERVICIOS
+[2026-05-20 12:49:41] === SERVIDOR INICIADO ===
+[2026-05-20 12:49:41] Servidor escuchando en puerto 8081
+[2026-05-20 12:49:50] Cliente conectado
+[2026-05-20 12:49:50] Comando recibido: GET_CLIENTES
+[2026-05-20 12:49:50] Comando recibido: GET_CLIENTES
+[2026-05-20 12:49:50] Comando recibido: GET_PELUQUERAS
+[2026-05-20 12:49:50] Comando recibido: GET_PELUQUERAS
+[2026-05-20 12:49:54] Cliente desconectado

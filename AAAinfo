@@ -1,6 +1,6 @@
 Para poder ejecutarlo en CMD hay q primero, abrir un cmd y poner:
 
-g++ -D_WIN32_WINNT=0x0600 -D_WIN32 -DWIN32_LEAN_AND_MEAN cliente.cpp cliente_red.cpp cliente_cache.cpp cliente_menu.cpp -o servidor.exe -lws2_32
+gcc -D_WIN32_WINNT=0x0600 -D_WIN32 -DWIN32_LEAN_AND_MEAN servidor.c servidor_red.c servidor_protocolo.c servidor_log.c basededatos.c clientes.c peluqueras.c servicios.c reservas.c config.c sqlite3.c -o servidor.exe -lws2_32
 
 y cuando cargue, poner. "servidor.exe" para que se inicie
 
