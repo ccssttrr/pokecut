@@ -88,6 +88,7 @@ string ClienteRed::enviarComando(const string& comando) {
     if (!conectado) {
         return "ERROR|No conectado al servidor";
     }
+    
     #ifdef _WIN32
         send(socket_fd, comando.c_str(), (int)comando.length(), 0);
         send(socket_fd, "\n", 1, 0);
@@ -109,7 +110,12 @@ string ClienteRed::enviarComando(const string& comando) {
         return "ERROR|Servidor no responde";
     }
     
-    return string(buffer);
+    string respuesta(buffer);
+    while (!respuesta.empty() && (respuesta.back() == '\n' || respuesta.back() == '\r')) {
+        respuesta.pop_back();
+    }
+    
+    return respuesta;
 }
 
 string ClienteRed::getUltimoError() const {

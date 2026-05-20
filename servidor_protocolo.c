@@ -16,13 +16,20 @@ void atenderCliente(int socket_cliente) {
         char* comando = recibirComando(socket_cliente);
         if (comando == NULL) break;
         
-        escribirLog("Comando recibido: %s", comando);
+        //para ignorar comandos vacios y que no salte el error
+        if (strlen(comando) == 0) {
+            free(comando);
+            continue;
+        }
+        
         printf("Comando: %s\n", comando);
+        escribirLog("Comando recibido: %s", comando);
         
         char* respuesta = procesarComando(comando);
         enviarRespuesta(socket_cliente, respuesta);
         
         free(respuesta);
+        free(comando);
     }
 }
 
