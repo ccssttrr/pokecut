@@ -9,6 +9,20 @@ using namespace std;
 
 extern ClienteRed cliente;
 
+int leerEnteroSeguro() {
+    int valor;
+
+    while (!(cin >> valor) || valor < 0) {
+        cin.clear();
+        cin.ignore(1000, '\n');
+
+        cout << "Entrada invalida. Introduce un numero positivo: ";
+    }
+
+    cin.ignore(1000, '\n');
+    return valor;
+}
+
 void menuPrincipal(Cache& cache) {
     int opcion;
     int idCliente;
@@ -25,8 +39,7 @@ void menuPrincipal(Cache& cache) {
         cout << " 0. Salir                       " << endl;
         cout << "================================" << endl;
         cout << "Opcion: ";
-        cin >> opcion;
-        cin.ignore(1000, '\n');
+        opcion = leerEnteroSeguro();
         
         switch (opcion) {
             case 1:
@@ -40,20 +53,17 @@ void menuPrincipal(Cache& cache) {
                 break;
             case 4:
                 cout << "ID Cliente: ";
-                cin >> idCliente;
-                cin.ignore();
+                idCliente = leerEnteroSeguro();
                 hacerReserva(cache, idCliente);
                 break;
             case 5:
                 cout << "ID Cliente: ";
-                cin >> idCliente;
-                cin.ignore();
+                idCliente = leerEnteroSeguro();
                 verMisReservas(cache, idCliente);
                 break;
             case 6:
                 cout << "ID Cliente: ";
-                cin >> idCliente;
-                cin.ignore();
+                idCliente = leerEnteroSeguro();
                 cancelarReserva(cache, idCliente);
                 break;
         }
@@ -106,15 +116,13 @@ void hacerReserva(Cache& cache, int idCliente) {
     
     int idServicio;
     cout << "ID del servicio: ";
-    cin >> idServicio;
-    cin.ignore();
+    idServicio = leerEnteroSeguro();
     
     verPeluqueras(cache);
     
     int idPeluquera;
     cout << "ID de la peluquera: ";
-    cin >> idPeluquera;
-    cin.ignore();
+    idPeluquera = leerEnteroSeguro();
     
     string fecha, hora;
     cout << "Fecha (dd/mm/aaaa): ";
@@ -152,9 +160,8 @@ void cancelarReserva(Cache& cache, int idCliente) {
     
     int idReserva;
     cout << "ID de la reserva a cancelar: ";
-    cin >> idReserva;
-    cin.ignore();
-    
+    idReserva = leerEnteroSeguro(); 
+
     if (cache.cancelarReserva(idReserva)) {
         cout << "[OK] Reserva cancelada correctamente" << endl;
     } else {
