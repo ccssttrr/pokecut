@@ -10,3 +10,6 @@ para poder cerrar todo y ejecutarlo otra vez, hay que:
 
     1: En cliente.exe darle a la opcion "0" para cerrar el programa
     2: ctrl + c o enter donde se ha abierto el servidor para cerrarlo
+
+
+Creo que el servidor no esta conectado a nuestra base de datos, eso hay que arreglar

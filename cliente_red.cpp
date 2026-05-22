@@ -89,28 +89,36 @@ string ClienteRed::enviarComando(const string& comando) {
         return "ERROR|No conectado al servidor";
     }
     
+    string cmdConNewline = comando + "\n";
     #ifdef _WIN32
-        send(socket_fd, comando.c_str(), (int)comando.length(), 0);
-        send(socket_fd, "\n", 1, 0);
+        send(socket_fd, cmdConNewline.c_str(), (int)cmdConNewline.length(), 0);
     #else
-        write(socket_fd, comando.c_str(), comando.length());
-        write(socket_fd, "\n", 1);
+        write(socket_fd, cmdConNewline.c_str(), cmdConNewline.length());
     #endif
     
+    string respuesta;
     char buffer[4096];
-    memset(buffer, 0, sizeof(buffer));
+    bool recibido = false;
     
-    #ifdef _WIN32
-        int bytes = recv(socket_fd, buffer, sizeof(buffer) - 1, 0);
-    #else
-        int bytes = read(socket_fd, buffer, sizeof(buffer) - 1);
-    #endif
-    
-    if (bytes <= 0) {
-        return "ERROR|Servidor no responde";
+    while (!recibido) {
+        memset(buffer, 0, sizeof(buffer));
+        #ifdef _WIN32
+            int bytes = recv(socket_fd, buffer, sizeof(buffer) - 1, 0);
+        #else
+            int bytes = read(socket_fd, buffer, sizeof(buffer) - 1);
+        #endif
+        
+        if (bytes <= 0) {
+            return "ERROR|Servidor no responde";
+        }
+        
+        respuesta += buffer;
+        
+        if (respuesta.find('\n') != string::npos) {
+            recibido = true;
+        }
     }
     
-    string respuesta(buffer);
     while (!respuesta.empty() && (respuesta.back() == '\n' || respuesta.back() == '\r')) {
         respuesta.pop_back();
     }

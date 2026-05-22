@@ -305,32 +305,51 @@ void guardarPeluqueras() {
 }
 
 static int callbackPeluquera(void *unused, int cols, char **valores, char **nombres) {
-    (void)unused; (void)cols; (void)nombres;
-
+    (void)unused;
+    (void)cols;
+    (void)nombres;
+    
     if (numPeluqueras >= capacidadPeluqueras) {
         capacidadPeluqueras *= 2;
         peluqueras = realloc(peluqueras, capacidadPeluqueras * sizeof(Peluquera));
     }
-
+    
     Peluquera p;
     p.id = atoi(valores[0]);
-    strncpy(p.nombre,       valores[1] ? valores[1] : "", 49);
+    strncpy(p.nombre, valores[1] ? valores[1] : "", 49);
     strncpy(p.especialidad, valores[2] ? valores[2] : "", 49);
-    strncpy(p.telefono,     valores[3] ? valores[3] : "", 19);
-    p.horasTrabajadas = valores[4] ? atof(valores[4]) : 0.0f;  // atof para float
-
+    strncpy(p.telefono, valores[3] ? valores[3] : "", 19);
+    p.horasTrabajadas = valores[4] ? atof(valores[4]) : 0;
+    p.nombre[49] = '\0';
+    p.especialidad[49] = '\0';
+    p.telefono[19] = '\0';
+    
+    printf("DEBUG: Peluquera cargada: ID=%d, Nombre=%s\n", p.id, p.nombre);
+    
     peluqueras[numPeluqueras++] = p;
     return 0;
 }
 
 void cargarPeluqueras() {
-    if (!db) return;
-    numPeluqueras = 0;
+    printf("DEBUG: Cargando peluqueras desde BD...\n");
+    
+    if (!db) {
+        printf("DEBUG: db es NULL\n");
+        return;
+    }
+    
     char *err = NULL;
-    sqlite3_exec(db,
-        "SELECT id, nombre, especialidad, telefono, horas_trabajadas FROM peluqueras;",
-        callbackPeluquera, NULL, &err);
-    if (err) { printf("Error cargando peluqueras: %s\n", err); sqlite3_free(err); }
+    const char *sql = "SELECT id, nombre, especialidad, telefono, horas_trabajadas FROM peluqueras;";
+    printf("DEBUG: Ejecutando: %s\n", sql);
+    
+    int rc = sqlite3_exec(db, sql, callbackPeluquera, NULL, &err);
+    
+    if (rc != SQLITE_OK) {
+        printf("DEBUG: Error cargando peluqueras: %s\n", err);
+        sqlite3_free(err);
+    } else {
+        printf("DEBUG: Fin de carga. Total peluqueras: %d\n", numPeluqueras);
+    }
 }
 
 void liberarPeluqueras() {

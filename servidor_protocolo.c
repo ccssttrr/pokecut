@@ -132,18 +132,24 @@ char* cmd_getClientes() {
 }
 
 char* cmd_getPeluqueras() {
+    printf("DEBUG: numPeluqueras = %d\n", numPeluqueras);
+    
     if (numPeluqueras == 0) {
+        printf("DEBUG: No hay peluqueras, devolviendo vacio\n");
         return strdup("200|OK|");
     }
     
-    //calcular el tamaño necesario
+    //para calcular tamaño necesario
     size_t tam = 50;
     for (int i = 0; i < numPeluqueras; i++) {
         tam += strlen(peluqueras[i].nombre) + strlen(peluqueras[i].especialidad) + strlen(peluqueras[i].telefono) + 50;
     }
     
     char* buffer = (char*)malloc(tam);
-    if (!buffer) return strdup("500|ERROR|Memoria insuficiente");
+    if (!buffer) {
+        printf("DEBUG: Error de memoria\n");
+        return strdup("500|ERROR|Memoria insuficiente");
+    }
     
     strcpy(buffer, "200|OK|");
     
@@ -156,8 +162,10 @@ char* cmd_getPeluqueras() {
                 peluqueras[i].telefono,
                 peluqueras[i].horasTrabajadas);
         strcat(buffer, temp);
+        printf("DEBUG: Aniadida peluquera: %s\n", temp);
     }
     
+    printf("DEBUG: Buffer final: %s\n", buffer);
     return buffer;
 }
 

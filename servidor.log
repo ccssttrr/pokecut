@@ -124,3 +124,57 @@
 [2026-05-20 12:49:50] Comando recibido: GET_PELUQUERAS
 [2026-05-20 12:49:50] Comando recibido: GET_PELUQUERAS
 [2026-05-20 12:49:54] Cliente desconectado
+[2026-05-22 18:34:16] === SERVIDOR INICIADO ===
+[2026-05-22 18:34:16] Servidor escuchando en puerto 8081
+[2026-05-22 18:34:25] Cliente conectado
+[2026-05-22 18:34:25] Comando recibido: GET_CLIENTES
+[2026-05-22 18:34:25] Comando recibido: GET_CLIENTES
+[2026-05-22 18:34:25] Comando recibido: GET_PELUQUERAS
+[2026-05-22 18:34:25] Comando recibido: GET_PELUQUERAS
+[2026-05-22 18:34:25] Comando recibido: GET_SERVICIOS
+[2026-05-22 18:34:25] Comando recibido: GET_SERVICIOS
+[2026-05-22 18:40:17] Cliente desconectado
+[2026-05-22 18:40:52] === SERVIDOR INICIADO ===
+[2026-05-22 18:40:52] Servidor escuchando en puerto 8081
+[2026-05-22 18:41:00] Cliente conectado
+[2026-05-22 18:41:00] Comando recibido: GET_CLIENTES
+[2026-05-22 18:41:00] Comando recibido: GET_CLIENTES
+[2026-05-22 18:41:00] Comando recibido: GET_PELUQUERAS
+[2026-05-22 18:41:00] Comando recibido: GET_PELUQUERAS
+[2026-05-22 18:42:58] Cliente desconectado
+[2026-05-22 18:43:21] === SERVIDOR INICIADO ===
+[2026-05-22 18:43:21] Servidor escuchando en puerto 8081
+[2026-05-22 18:43:24] Cliente conectado
+[2026-05-22 18:43:24] Comando recibido: GET_CLIENTES
+[2026-05-22 18:43:24] Comando recibido: GET_CLIENTES
+[2026-05-22 18:43:24] Comando recibido: GET_PELUQUERAS
+[2026-05-22 18:43:24] Comando recibido: GET_PELUQUERAS
+[2026-05-22 18:45:42] Servidor apagado por senal
+[2026-05-22 18:46:13] === SERVIDOR INICIADO ===
+[2026-05-22 18:46:13] Servidor escuchando en puerto 8081
+[2026-05-22 18:46:17] Cliente conectado
+[2026-05-22 18:46:17] Comando recibido: GET_CLIENTES
+[2026-05-22 18:46:17] Comando recibido: GET_CLIENTES
+[2026-05-22 18:46:17] Comando recibido: GET_PELUQUERAS
+[2026-05-22 18:46:17] Comando recibido: GET_PELUQUERAS
+[2026-05-22 18:46:17] Comando recibido: GET_SERVICIOS
+[2026-05-22 18:46:17] Comando recibido: GET_SERVICIOS
+[2026-05-22 18:46:43] Comando recibido: GET_HORARIOS|01
+[2026-05-22 18:46:43] Comando recibido: GET_HORARIOS|01
+[2026-05-22 18:47:37] Comando recibido: CREAR_RESERVA|3|0|2|01/06/2026|12:00
+[2026-05-22 18:47:37] Comando recibido: CREAR_RESERVA|3|0|2|01/06/2026|12:00
+[2026-05-22 18:47:46] Comando recibido: MIS_RESERVAS|3
+[2026-05-22 18:47:46] Comando recibido: MIS_RESERVAS|3
+[2026-05-22 18:47:49] Comando recibido: MIS_RESERVAS|1
+[2026-05-22 18:47:49] Comando recibido: MIS_RESERVAS|1
+[2026-05-22 18:47:51] Comando recibido: MIS_RESERVAS|2
+[2026-05-22 18:47:51] Comando recibido: MIS_RESERVAS|2
+[2026-05-22 18:47:53] Comando recibido: MIS_RESERVAS|3
+[2026-05-22 18:47:53] Comando recibido: MIS_RESERVAS|3
+[2026-05-22 18:47:55] Comando recibido: MIS_RESERVAS|4
+[2026-05-22 18:47:55] Comando recibido: MIS_RESERVAS|4
+[2026-05-22 18:47:58] Comando recibido: MIS_RESERVAS|5
+[2026-05-22 18:47:58] Comando recibido: MIS_RESERVAS|5
+[2026-05-22 18:48:01] Comando recibido: MIS_RESERVAS|6
+[2026-05-22 18:48:01] Comando recibido: MIS_RESERVAS|6
+[2026-05-22 18:48:30] Cliente desconectado
