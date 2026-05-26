@@ -97,29 +97,32 @@ string ClienteRed::enviarComando(const string& comando) {
     #endif
     
     string respuesta;
-    char buffer[4096];
-    bool recibido = false;
+    char buffer[1];
+    char anterior = 0;
     
-    while (!recibido) {
-        memset(buffer, 0, sizeof(buffer));
+    while (true) {
         #ifdef _WIN32
-            int bytes = recv(socket_fd, buffer, sizeof(buffer) - 1, 0);
+            int bytes = recv(socket_fd, buffer, 1, 0);
         #else
-            int bytes = read(socket_fd, buffer, sizeof(buffer) - 1);
+            int bytes = read(socket_fd, buffer, 1);
         #endif
         
         if (bytes <= 0) {
             return "ERROR|Servidor no responde";
         }
         
-        respuesta += buffer;
+        respuesta += buffer[0];
         
-        if (respuesta.find('\n') != string::npos) {
-            recibido = true;
+        if (buffer[0] == '\n' && anterior != '\r') {
+            break;
         }
+        anterior = buffer[0];
     }
     
-    while (!respuesta.empty() && (respuesta.back() == '\n' || respuesta.back() == '\r')) {
+    if (!respuesta.empty() && respuesta.back() == '\n') {
+        respuesta.pop_back();
+    }
+    if (!respuesta.empty() && respuesta.back() == '\r') {
         respuesta.pop_back();
     }
     
