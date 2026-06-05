@@ -35,7 +35,7 @@ void atenderCliente(int socket_cliente) {
 
 
 char* procesarComando(const char* comando) {
-    printf("DEBUG: Comando recibido: '%s'\n", comando);
+    // printf("DEBUG: Comando recibido: '%s'\n", comando);
     escribirLog("Comando recibido: %s", comando);
     
     char copia[512];
@@ -44,17 +44,17 @@ char* procesarComando(const char* comando) {
     char* cmd = strtok(copia, "|");
     
     if (cmd == NULL) {
-        printf("DEBUG: Comando vacío o NULL\n");
-        return strdup("400|ERROR|Comando vacío");
+        // printf("DEBUG: Comando vacio o NULL\n");
+        return strdup("400|ERROR|Comando vacio");
     }
     
-    printf("DEBUG: Comando parseado: '%s'\n", cmd);
+    // printf("DEBUG: Comando parseado: '%s'\n", cmd);
     
     if (strcmp(cmd, "GET_CLIENTES") == 0) {
         return cmd_getClientes();
     }
     else if (strcmp(cmd, "GET_PELUQUERAS") == 0) {
-        printf("DEBUG: Procesando GET_PELUQUERAS\n");
+        // printf("DEBUG: Procesando GET_PELUQUERAS\n");
         return cmd_getPeluqueras();
     }
     else if (strcmp(cmd, "GET_SERVICIOS") == 0) {
@@ -73,7 +73,7 @@ char* procesarComando(const char* comando) {
         char* hora = strtok(NULL, "|");
         
         if (!id_cliente || !id_peluquera || !id_servicio || !fecha || !hora) {
-            return strdup("400|ERROR|Faltan parámetros");
+            return strdup("400|ERROR|Faltan parametros");
         }
         return cmd_crearReserva(atoi(id_cliente), atoi(id_peluquera),  atoi(id_servicio), fecha, hora);
     }
@@ -132,10 +132,10 @@ char* cmd_getClientes() {
 }
 
 char* cmd_getPeluqueras() {
-    printf("DEBUG: numPeluqueras = %d\n", numPeluqueras);
+    // printf("DEBUG: numPeluqueras = %d\n", numPeluqueras);
     
     if (numPeluqueras == 0) {
-        printf("DEBUG: No hay peluqueras, devolviendo vacio\n");
+        // printf("DEBUG: No hay peluqueras, devolviendo vacio\n");
         return strdup("200|OK|");
     }
     
@@ -147,7 +147,7 @@ char* cmd_getPeluqueras() {
     
     char* buffer = (char*)malloc(tam);
     if (!buffer) {
-        printf("DEBUG: Error de memoria\n");
+        // printf("DEBUG: Error de memoria\n");
         return strdup("500|ERROR|Memoria insuficiente");
     }
     
@@ -162,10 +162,10 @@ char* cmd_getPeluqueras() {
                 peluqueras[i].telefono,
                 peluqueras[i].horasTrabajadas);
         strcat(buffer, temp);
-        printf("DEBUG: Aniadida peluquera: %s\n", temp);
+        // printf("DEBUG: Aniadida peluquera: %s\n", temp);
     }
     
-    printf("DEBUG: Buffer final: %s\n", buffer);
+    // printf("DEBUG: Buffer final: %s\n", buffer);
     return buffer;
 }
 
@@ -199,10 +199,48 @@ char* cmd_getServicios() {
 }
 
 char* cmd_getHorarios(const char* fecha) {
-    (void)fecha;  // Evitar warning
+    printf("DEBUG getHorarios: fecha=%s\n", fecha);
+    printf("DEBUG getHorarios: numReservas=%d\n", numReservas);
     
-    //por ahora devolvemos horarios fijos
-    return strdup("200|OK|09:00,10:00,11:00,12:00,13:00,16:00,17:00,18:00,19:00");
+    const char* todosHorarios[] = {"09:00", "10:00", "11:00", "12:00", "13:00", "16:00", "17:00", "18:00", "19:00"};
+    int numHorarios = 9;
+    
+    int ocupados[9] = {0};
+    
+    for (int i = 0; i < numReservas; i++) {
+        printf("DEBUG: Reserva %d: fecha=%s, hora=%s\n", i, reservas[i].fecha, reservas[i].hora);
+        if (strcmp(reservas[i].fecha, fecha) == 0) {
+            printf("DEBUG: Coincide fecha! Buscando hora %s\n", reservas[i].hora);
+            for (int j = 0; j < numHorarios; j++) {
+                if (strcmp(reservas[i].hora, todosHorarios[j]) == 0) {
+                    ocupados[j] = 1;
+                    printf("DEBUG: Hora %s marcada como ocupada\n", todosHorarios[j]);
+                    break;
+                }
+            }
+        }
+    }
+    
+    char buffer[512] = "200|OK|";
+    int primero = 1;
+    
+    for (int i = 0; i < numHorarios; i++) {
+        if (!ocupados[i]) {
+            if (!primero) {
+                strcat(buffer, ",");
+            }
+            strcat(buffer, todosHorarios[i]);
+            primero = 0;
+        }
+    }
+    
+    printf("DEBUG: Buffer respuesta: %s\n", buffer);
+    
+    if (primero) {
+        return strdup("200|OK|");
+    }
+    
+    return strdup(buffer);
 }
 
 char* cmd_crearReserva(int id_cliente, int id_peluquera, int id_servicio, const char* fecha, const char* hora) {
@@ -305,5 +343,5 @@ char* cmd_login(const char* usuario, const char* pass) {
         strcmp(pass, config.adminPass) == 0) {
         return strdup("200|OK|Login exitoso");
     }
-    return strdup("401|ERROR|Usuario o contraseña incorrectos");
+    return strdup("401|ERROR|Usuario o contrasena incorrectos");
 }

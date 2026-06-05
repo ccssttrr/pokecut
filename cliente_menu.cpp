@@ -9,6 +9,19 @@ using namespace std;
 
 extern ClienteRed cliente;
 
+bool fechaValida(int dia, int mes, int anio) {
+    if (anio < 1900 || anio > 2100) return false;
+    if (mes < 1 || mes > 12) return false;
+    if (dia < 1 || dia > 31) return false;
+    
+    int diasPorMes[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    
+    
+    if (dia > diasPorMes[mes - 1]) return false;
+    
+    return true;
+}
+
 int leerEnteroSeguro() {
     int valor;
 
@@ -103,6 +116,17 @@ void consultarHorarios(Cache& cache) {
     cout << "Fecha (dd/mm/aaaa): ";
     getline(cin, fecha);
     
+    int dia, mes, anio;
+    if (sscanf(fecha.c_str(), "%d/%d/%d", &dia, &mes, &anio) != 3) {
+        cout << "[ERROR] Formato de fecha invalido. Usa dd/mm/aaaa" << endl;
+        return;
+    }
+    
+    if (!fechaValida(dia, mes, anio)) {
+        cout << "[ERROR] Fecha invalida: " << fecha << endl;
+        return;
+    }
+    
     vector<string> horarios = cache.getHorarios(fecha);
     
     cout << "\nHorarios disponibles para " << fecha << ":" << endl;
@@ -154,8 +178,9 @@ void hacerReserva(Cache& cache, int idCliente) {
         cout << "[ERROR] Formato de fecha invalido. Usa dd/mm/aaaa" << endl;
         return;
     }
-    if (mes < 1 || mes > 12 || dia < 1 || dia > 31) {
-        cout << "[ERROR] Fecha invalida" << endl;
+        
+    if (!fechaValida(dia, mes, anio)) {
+        cout << "[ERROR] Fecha invalida: " << fecha << endl;
         return;
     }
     
@@ -172,13 +197,27 @@ void hacerReserva(Cache& cache, int idCliente) {
         return;
     }
     
+    cout << "Verificando disponibilidad del horario..." << endl;
+    vector<string> horarios = cache.getHorarios(fecha);
+    bool horarioDisponible = false;
+    for (const auto& h : horarios) {
+        if (h == hora) {
+            horarioDisponible = true;
+            break;
+        }
+    }
+    
+    if (!horarioDisponible) {
+        cout << "[ERROR] El horario " << hora << " no esta disponible para la fecha " << fecha << endl;
+        return;
+    }
+    
     if (cache.crearReserva(idCliente, idPeluquera, idServicio, fecha, hora)) {
         cout << "[OK] Reserva creada con exito" << endl;
     } else {
-        cout << "[ERROR] No se pudo crear la reserva (puede que el horario no este disponible)" << endl;
+        cout << "[ERROR] No se pudo crear la reserva" << endl;
     }
 }
-
 void verMisReservas(Cache& cache, int idCliente) {
     ClienteInfo cliente = cache.buscarCliente(idCliente);
     if (cliente.id == -1) {

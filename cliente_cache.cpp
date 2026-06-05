@@ -181,11 +181,8 @@ bool Cache::crearReserva(int idCliente, int idPeluquera, int idServicio, const s
     
     string respuesta = cliente.enviarComando(comando.str());
     
-    cout << "DEBUG Respuesta reserva: " << respuesta << endl;
-    
     if (respuesta.find("200|OK|") == 0) {
         reservasPorCliente.erase(idCliente);
-        cout << "[OK] Reserva creada con exito" << endl;
         return true;
     }
     else if (respuesta.find("400|ERROR|") == 0) {
@@ -298,12 +295,6 @@ vector<string> Cache::getHorarios(const string& fecha) {
     vector<string> horarios;
     
     if (respuesta.find("200|OK|") != 0) {
-        if (respuesta.find("400|ERROR|") == 0) {
-            string error = respuesta.substr(9);
-            cout << "[ERROR] " << error << endl;
-        } else {
-            cout << "[ERROR] Error al obtener horarios: " << respuesta << endl;
-        }
         return horarios;
     }
     
@@ -315,10 +306,6 @@ vector<string> Cache::getHorarios(const string& fecha) {
         if (!horario.empty()) {
             horarios.push_back(horario);
         }
-    }
-    
-    if (horarios.empty()) {
-        cout << "[INFO] No hay horarios disponibles para " << fecha << endl;
     }
     
     horariosCache[fecha] = horarios;
