@@ -181,12 +181,27 @@ bool Cache::crearReserva(int idCliente, int idPeluquera, int idServicio, const s
     
     string respuesta = cliente.enviarComando(comando.str());
     
+    cout << "DEBUG Respuesta reserva: " << respuesta << endl;
+    
     if (respuesta.find("200|OK|") == 0) {
         reservasPorCliente.erase(idCliente);
+        cout << "[OK] Reserva creada con exito" << endl;
         return true;
     }
-    
-    return false;
+    else if (respuesta.find("400|ERROR|") == 0) {
+        string error = respuesta.substr(9);
+        cout << "[ERROR] " << error << endl;
+        return false;
+    }
+    else if (respuesta.find("409|ERROR|") == 0) {
+        string error = respuesta.substr(9);
+        cout << "[ERROR] " << error << endl;
+        return false;
+    }
+    else {
+        cout << "[ERROR] Respuesta desconocida: " << respuesta << endl;
+        return false;
+    }
 }
 
 vector<ReservaInfo> Cache::getMisReservas(int idCliente) {
@@ -201,9 +216,15 @@ vector<ReservaInfo> Cache::getMisReservas(int idCliente) {
     vector<ReservaInfo> reservas;
     
     if (respuesta.find("200|OK|") != 0) {
+        if (respuesta.find("400|ERROR|") == 0) {
+            string error = respuesta.substr(9);
+            cout << "[ERROR] " << error << endl;
+        } else {
+            cout << "[ERROR] Error al obtener reservas: " << respuesta << endl;
+        }
         return reservas;
     }
-    
+        
     string datos = respuesta.substr(7);
     if (datos.empty()) {
         return reservas;
@@ -243,7 +264,7 @@ bool Cache::cancelarReserva(int idReserva) {
     string respuesta = cliente.enviarComando(comando.str());
     
     if (respuesta.find("200|OK|") == 0) {
-        
+        cout << "[OK] Reserva cancelada correctamente" << endl;
         for (auto& par : reservasPorCliente) {
             for (auto it = par.second.begin(); it != par.second.end(); ++it) {
                 if (it->id == idReserva) {
@@ -254,8 +275,15 @@ bool Cache::cancelarReserva(int idReserva) {
         }
         return true;
     }
-    
-    return false;
+    else if (respuesta.find("404|ERROR|") == 0) {
+        string error = respuesta.substr(9);
+        cout << "[ERROR] " << error << endl;
+        return false;
+    }
+    else {
+        cout << "[ERROR] " << respuesta << endl;
+        return false;
+    }
 }
 
 vector<string> Cache::getHorarios(const string& fecha) {
@@ -270,6 +298,12 @@ vector<string> Cache::getHorarios(const string& fecha) {
     vector<string> horarios;
     
     if (respuesta.find("200|OK|") != 0) {
+        if (respuesta.find("400|ERROR|") == 0) {
+            string error = respuesta.substr(9);
+            cout << "[ERROR] " << error << endl;
+        } else {
+            cout << "[ERROR] Error al obtener horarios: " << respuesta << endl;
+        }
         return horarios;
     }
     
@@ -281,6 +315,10 @@ vector<string> Cache::getHorarios(const string& fecha) {
         if (!horario.empty()) {
             horarios.push_back(horario);
         }
+    }
+    
+    if (horarios.empty()) {
+        cout << "[INFO] No hay horarios disponibles para " << fecha << endl;
     }
     
     horariosCache[fecha] = horarios;

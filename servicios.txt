@@ -1,9 +1,8 @@
 1,Corte de pelo,Corte a tijera con lavado incluido,30,15.50
 2,Tinte completo,Tinte de coloración permanente con marcas profesionales,90,45.00
 3,Lavado y peinado,Lavado con masaje capilar y peinado básico,25,12.00
-4,Alisado japonés,Alisado permanente con queratina,120,80.00
+4,Alisado japones,Alisado permanente con queratina,120,80.00
 5,Mechas californianas,Mechas con técnica balayage,100,65.00
-6,Corte,infantil,1980361296,-17.38
-6422020,Corte,infantil,40,30.00
-7,Corte infantil,Corte para ni�os menores de 13,30,25.00
-8,Corte infantil,Corte para menores de 13,30,25.00
+6,Corte, infantil,Corte infantil a menores,25,30.00
+7,Corte Brasileino,Corte estilo brasil,90,25.00
+8,Corte Exotico,Corte exotico de pelo,70,45.00

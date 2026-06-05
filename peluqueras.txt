@@ -1,8 +1,15 @@
-1,Ana,Corte,600111222,64.0
-2,Laura,Color,611222333,32.0
-3,Martita,Peinados,6656333,25.0
-4,Jon,Alisado,5544633,50.0
-10,Lorena,Alisado,6679933,40.0
-2,Ariana,Alisado,Japones,36.0
-11,Mariana,Color azul,667454,15.0
-12,Jose,Corte Caballero,55343453,0.0
+1,Ana,Corte,600111222,6.5
+2,Laura,Color,611222333,8.0
+3,Martita,Peinados,6656333,7.0
+4,Jon,Alisado,5544633,9.5
+5,Lorena,Alisado,6679933,5.0
+6,Ariana,Alisado,33443323,10.0
+7,Mariana,Color azul,667454,4.5
+8,Jose,Corte Caballero,55343453,7.5
+9,Maria,Lavados,64433456,3.0
+10,Elena,Tinte,67788990,12.0
+11,Sofia,Peinados,68899001,8.5
+12,Carlos,Corte Caballero,69900112,6.0
+13,Patricia,Color,60011223,15.0
+14,Isabel,Alisado Japones,63344556,11.5
+15,Raul,Corte Barba,64455667,2.5

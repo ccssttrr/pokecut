@@ -50,8 +50,7 @@ void altaCliente() {
     scanf("%49s", c.nombre);
     printf("Telefono: ");
     scanf("%19s", c.telefono);
-    printf("Email: ");
-    scanf("%99s", c.email);
+
 
     clientes[numClientes++] = c;
     guardarCliente(c);  // guarda solo este en SQLite

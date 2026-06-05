@@ -9,6 +9,7 @@ void inicializarBD();
 void cargarBD();
 void guardarBD();
 void cerrarBD();
+void migrarDesdeTXT();
 
 void crearTablas();
 

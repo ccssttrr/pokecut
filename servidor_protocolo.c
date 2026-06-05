@@ -206,7 +206,6 @@ char* cmd_getHorarios(const char* fecha) {
 }
 
 char* cmd_crearReserva(int id_cliente, int id_peluquera, int id_servicio, const char* fecha, const char* hora) {
-    //verificar que cliente, peluquera y servicio existen
     int cliente_ok = 0, peluquera_ok = 0, servicio_ok = 0;
     
     for (int i = 0; i < numClientes; i++) {
@@ -223,15 +222,40 @@ char* cmd_crearReserva(int id_cliente, int id_peluquera, int id_servicio, const 
     if (!peluquera_ok) return strdup("400|ERROR|Peluquera no existe");
     if (!servicio_ok) return strdup("400|ERROR|Servicio no existe");
     
-    //crear reserva
-    //aqui se llamaria a la función de crear reserva de reservas.c
+    for (int i = 0; i < numReservas; i++) {
+        if (reservas[i].idPeluquera == id_peluquera &&
+            strcmp(reservas[i].fecha, fecha) == 0 &&
+            strcmp(reservas[i].hora, hora) == 0) {
+            return strdup("409|ERROR|Horario no disponible");
+        }
+    }
+    
+    int nuevoId = 1;
+    for (int i = 0; i < numReservas; i++) {
+        if (reservas[i].idReserva >= nuevoId) nuevoId = reservas[i].idReserva + 1;
+    }
+    
+    if (numReservas >= capacidadReservas) {
+        capacidadReservas *= 2;
+        reservas = realloc(reservas, capacidadReservas * sizeof(Reserva));
+        if (!reservas) return strdup("500|ERROR|Memoria insuficiente");
+    }
+    
+    Reserva r;
+    r.idReserva = nuevoId;
+    r.idCliente = id_cliente;
+    r.idPeluquera = id_peluquera;
+    r.idServicio = id_servicio;
+    strcpy(r.fecha, fecha);
+    strcpy(r.hora, hora);
+    
+    reservas[numReservas++] = r;
+    guardarReserva(r);
+    
+    escribirLog("Reserva creada: ID=%d", nuevoId);
     
     char* respuesta = (char*)malloc(100);
-    sprintf(respuesta, "200|OK|Reserva creada|%d", numReservas + 1);
-    
-    escribirLog("Reserva creada: Cliente=%d, Peluquera=%d, Servicio=%d, Fecha=%s, Hora=%s",
-                id_cliente, id_peluquera, id_servicio, fecha, hora);
-    
+    sprintf(respuesta, "200|OK|Reserva creada|%d", nuevoId);
     return respuesta;
 }
 

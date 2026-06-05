@@ -164,8 +164,8 @@ void guardarReserva(Reserva r) {
     sqlite3_bind_int (stmt, 2, r.idCliente);
     sqlite3_bind_int (stmt, 3, r.idPeluquera);
     sqlite3_bind_int (stmt, 4, r.idServicio);
-    sqlite3_bind_text(stmt, 5, r.fecha, -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 6, r.hora,  -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 5, r.fecha, -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 6, r.hora,  -1, SQLITE_TRANSIENT);
 
     sqlite3_step(stmt);
     sqlite3_finalize(stmt);
